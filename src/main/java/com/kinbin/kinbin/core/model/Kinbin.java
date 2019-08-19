@@ -1,9 +1,22 @@
 package com.kinbin.kinbin.core.model;
 
 public class Kinbin {
-    public static final double DEFAULT_WEIGHT = 100;
+    public static final double DEFAULT_WEIGHT = 50;
     public static final double DEFAULT_ENERGY = 50;
-    public static final double DEFAYLT_FORTUNE = 100;
+    public static final double DEFAULT_FORTUNE = 1000;
+    public static final Mood DEFAULT_MOOD = Mood.NEUTRAL;
+
+    public static final double MIN_FORTUNE = 0;
+    public static final double MIN_MED_FORTUNE = 100;
+    public static final double MAX_MED_FORTUNE = 500;
+    public static final double MAX_FORTUNE = 1500;
+
+    public static final double MIN_ENERGY = 15;
+    public static final double MED_ENERGY = 30;
+    public static final double MAX_ENERGY = 60;
+
+    public static final double OVERWEIGHT = 80;
+    public static final double UNDERWEIGHT = 20;
 
     private double weight;
     private double energy;
@@ -13,8 +26,8 @@ public class Kinbin {
     public Kinbin() {
         this.weight = DEFAULT_WEIGHT;
         this.energy = DEFAULT_ENERGY;
-        this.fortune = DEFAYLT_FORTUNE;
-        this.mood = Mood.NEUTRAL;
+        this.fortune = DEFAULT_FORTUNE;
+        this.mood = DEFAULT_MOOD;
     }
 
     public double getWeight() {
@@ -45,11 +58,11 @@ public class Kinbin {
         energy -= energy * (percent/100);
     }
 
-    public void addFortune(int value) {
+    public void addFortune(double value) {
         fortune += value;
     }
 
-    public void removeFortune(int value) {
+    public void removeFortune(double value) {
         fortune -= value;
     }
 
@@ -58,20 +71,41 @@ public class Kinbin {
     }
 
     public void updateMood() {
-        if (fortune < 0) {
+        if (isPoorOrExhaustedOrOverweighted()) {
             mood = Mood.DESESPERATE;
-        }
-        if (fortune >= 0 && fortune <= 100) {
+        } else if (hasLittleMoneyOrIsTired()) {
             mood = Mood.WORRIED;
-        }
-        if (fortune > 100 && fortune <= 500) {
+        } else if (hasReasonableMoney()) {
             mood = Mood.OPTIMISTIC;
-        }
-        if (fortune > 500 && fortune <= 1500) {
+        } else if (hasSufficientMoneyOrIsActive()) {
             mood = Mood.NEUTRAL;
-        }
-        if (fortune > 1500) {
+        } else if (isRichOrEnergized()) {
             mood = Mood.HAPPY;
         }
+    }
+
+    private boolean isRichOrEnergized() {
+        return (fortune > MAX_FORTUNE) || (energy >= MAX_ENERGY);
+    }
+
+    private boolean hasSufficientMoneyOrIsActive() {
+        return (fortune > MAX_MED_FORTUNE && fortune <= MAX_FORTUNE)
+                || (energy >= MED_ENERGY && energy < MAX_ENERGY);
+    }
+
+    private boolean hasReasonableMoney() {
+        return fortune > MIN_MED_FORTUNE && fortune <= MAX_MED_FORTUNE;
+    }
+
+    private boolean hasLittleMoneyOrIsTired() {
+        return (fortune >= MIN_FORTUNE && fortune <= MIN_MED_FORTUNE)
+                || (energy >= MIN_ENERGY && energy < MED_ENERGY);
+    }
+
+    private boolean isPoorOrExhaustedOrOverweighted() {
+        return fortune < MIN_FORTUNE
+                || energy < MIN_ENERGY
+                || weight > OVERWEIGHT
+                || weight < UNDERWEIGHT;
     }
 }
