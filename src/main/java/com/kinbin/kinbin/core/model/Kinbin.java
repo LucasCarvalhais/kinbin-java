@@ -42,6 +42,10 @@ public class Kinbin {
         return fortune;
     }
 
+    public Mood getMood() {
+        return mood;
+    }
+
     public void increaseWeight(double percent) {
         weight += weight * (percent/100);
     }
@@ -64,10 +68,6 @@ public class Kinbin {
 
     public void removeFortune(double value) {
         fortune -= value;
-    }
-
-    public Mood getMood() {
-        return mood;
     }
 
     public void updateMood() {
