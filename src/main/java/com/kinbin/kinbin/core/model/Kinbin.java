@@ -71,7 +71,7 @@ public class Kinbin {
     }
 
     public void updateMood() {
-        if (isPoorOrExhaustedOrOverweighted()) {
+        if (isPoorOrExhaustedOrOverweightedOrUnderWeighted()) {
             mood = Mood.DESESPERATE;
         } else if (hasLittleMoneyOrIsTired()) {
             mood = Mood.WORRIED;
@@ -102,7 +102,7 @@ public class Kinbin {
                 || (energy >= MIN_ENERGY && energy < MED_ENERGY);
     }
 
-    private boolean isPoorOrExhaustedOrOverweighted() {
+    private boolean isPoorOrExhaustedOrOverweightedOrUnderWeighted() {
         return fortune < MIN_FORTUNE
                 || energy < MIN_ENERGY
                 || weight > OVERWEIGHT
