@@ -5,6 +5,7 @@ import com.kinbin.kinbin.core.model.Card;
 import com.kinbin.kinbin.core.model.CardType;
 import com.kinbin.kinbin.core.model.Column;
 import com.kinbin.kinbin.core.model.Kinbin;
+import org.assertj.core.util.Maps;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,14 +24,13 @@ public class BoardTest {
     public static final String IN_QUALITY_ANALYST = "In Quality Analyst";
     public static final String ACCEPTED = "Accepted";
     public static final String DONE = "Done";
+    public static final String REPLENISHMENT_COLUMN = "Replenishment Column";
 
-    Board board;
+    private Board board;
 
-    @Before
-    public void setUp() {
+    private Board initializeStandardBoard() {
         Map<String, Column> columns = initializeColumns();
-        Kinbin kinbin = new Kinbin();
-        board = new Board(columns, kinbin);
+        return new Board(columns, new Kinbin());
     }
 
     private Map<String, Column> initializeColumns() {
@@ -70,22 +70,72 @@ public class BoardTest {
         return columns;
     }
 
+    private Board initializeBoardWithReplanishmentColumn() {
+        Column column = new Column(REPLENISHMENT_COLUMN);
+        column.setAsReplenishment();
+        column.setLimit(4);
+        Map<String, Column> columns = Maps.newHashMap(REPLENISHMENT_COLUMN, column);
+        return new Board(columns, new Kinbin());
+    }
+
     @Test
     public void shouldInitializeBoardWithSevenColumns() {
+        board = initializeStandardBoard();
         assertThat(board.getColumns().size(), is(7));
     }
 
     @Test
     public void shouldAddNewCardsInBacklog() {
+        board = initializeStandardBoard();
         board.addNewCard(new Card(1, CardType.STORY), BACKLOG);
         assertThat(board.getColumns().get(BACKLOG).getCards().size(), is(1));
     }
 
     @Test
-    public void shouldTransferFromBacklogToInQuality() throws CardNotFoundException {
+    public void shouldTransferFromBacklogToInAnalyst() throws CardNotFoundException {
+        board = initializeStandardBoard();
         board.addNewCard(new Card(1, CardType.STORY), BACKLOG);
         board.transition(1, BACKLOG, IN_ANALYST);
         assertThat(board.getColumns().get(BACKLOG).getCards().size(), is(0));
         assertThat(board.getColumns().get(IN_ANALYST).getCards().size(), is(1));
+    }
+
+    @Test
+    public void shouldRemove0point05PercentOfWeightIfReplanishmentColumnIsEmpty() {
+        Board boardWithReplenishmentColumn = initializeBoardWithReplanishmentColumn();
+
+        double previousWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        boardWithReplenishmentColumn.pulse();
+        double actualWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        double expectedWeight = previousWeight - previousWeight*(0.05/100);
+        assertThat(actualWeight, is(expectedWeight));
+    }
+
+    @Test
+    public void shouldNotAddNorRemoveWeightIfReplanishmentColumnIfLimitIsNotReached() {
+        Board boardWithReplenishmentColumn = initializeBoardWithReplanishmentColumn();
+        Card card = new Card(1, CardType.STORY);
+        boardWithReplenishmentColumn.addNewCard(card, REPLENISHMENT_COLUMN);
+
+        double previousWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        boardWithReplenishmentColumn.pulse();
+        double actualWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        assertThat(actualWeight, is(previousWeight));
+    }
+
+    @Test
+    public void shouldIncrease0point05PercentOfWeightIfLimitIsReached() {
+        Board boardWithReplenishmentColumn = initializeBoardWithReplanishmentColumn();
+        boardWithReplenishmentColumn.addNewCard(new Card(1, CardType.STORY), REPLENISHMENT_COLUMN);
+        boardWithReplenishmentColumn.addNewCard(new Card(2, CardType.DEFECT), REPLENISHMENT_COLUMN);
+        boardWithReplenishmentColumn.addNewCard(new Card(3, CardType.SPIKE), REPLENISHMENT_COLUMN);
+        boardWithReplenishmentColumn.addNewCard(new Card(4, CardType.TECH_DEBT), REPLENISHMENT_COLUMN);
+
+        double previousWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        boardWithReplenishmentColumn.pulse();
+        double actualWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+
+        double expectedWeight = previousWeight + previousWeight*(0.05/100);
+        assertThat(actualWeight, is(expectedWeight));
     }
 }

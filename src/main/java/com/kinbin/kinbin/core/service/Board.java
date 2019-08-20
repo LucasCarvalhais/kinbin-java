@@ -21,6 +21,10 @@ public class Board {
         return columns;
     }
 
+    public Kinbin getKinbin() {
+        return kinbin;
+    }
+
     public void addNewCard(Card card, String column) {
         columns.get(column).addCard(card);
     }
@@ -28,5 +32,18 @@ public class Board {
     public void transition(int cardNumber, String columnFrom, String columnTo) throws CardNotFoundException {
         Card card = columns.get(columnFrom).removeCard(cardNumber);
         columns.get(columnTo).addCard(card);
+    }
+
+    public void pulse() {
+        for (Column column : columns.values()) {
+            if (column.isReplenishment()) {
+                if (column.getCards().isEmpty()) {
+                    kinbin.decreaseWeight(0.05);
+                }
+                if (column.getCards().size() >= column.getLimit()) {
+                    kinbin.increaseWeight(0.05);
+                }
+            }
+        }
     }
 }
