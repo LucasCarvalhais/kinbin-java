@@ -14,6 +14,7 @@ public class Column {
     private boolean start;
     private boolean end;
     private List<Card> cards;
+    private int limit;
 
     public Column(String name) {
         this.name = name;
@@ -27,6 +28,14 @@ public class Column {
 
     public String getName() {
         return name;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getLimit() {
+        return limit;
     }
 
     public boolean isReplenishment() {
