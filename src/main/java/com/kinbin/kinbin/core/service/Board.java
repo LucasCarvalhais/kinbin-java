@@ -44,6 +44,14 @@ public class Board {
                     kinbin.increaseWeight(0.05);
                 }
             }
+
+            if (column.isWorkStage()) {
+                if (column.getCards().isEmpty()) {
+                    kinbin.increaseWeight(0.01);
+                } else {
+                    kinbin.decreaseWeight(0.01 * column.getCards().size());
+                }
+            }
         }
     }
 }
