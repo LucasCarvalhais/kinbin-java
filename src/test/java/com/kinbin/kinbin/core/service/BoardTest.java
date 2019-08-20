@@ -93,7 +93,9 @@ public class BoardTest {
     @Test
     public void shouldAddNewCardsInBacklog() {
         board = initializeStandardBoard();
+
         board.addNewCard(new Card(1, CardType.STORY), BACKLOG);
+
         assertThat(board.getColumns().get(BACKLOG).getCards().size(), is(1));
     }
 
@@ -110,69 +112,68 @@ public class BoardTest {
 
     @Test
     public void shouldRemove0point05PercentOfWeightIfReplanishmentColumnIsEmpty() {
-        Board boardWithReplenishmentColumn = initializeBoardWithReplanishmentColumn();
+        board = initializeBoardWithReplanishmentColumn();
 
-        double previousWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
-        boardWithReplenishmentColumn.pulse();
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
 
-        double actualWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        double actualWeight = board.getKinbin().getWeight();
         double expectedWeight = previousWeight - previousWeight*(0.05/100);
         assertThat(actualWeight, is(expectedWeight));
     }
 
     @Test
     public void shouldNotAddNorRemoveWeightIfReplanishmentColumnIfLimitIsNotReached() {
-        Board boardWithReplenishmentColumn = initializeBoardWithReplanishmentColumn();
-        Card card = new Card(1, CardType.STORY);
-        boardWithReplenishmentColumn.addNewCard(card, COLUMN_TEST);
+        board = initializeBoardWithReplanishmentColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
 
-        double previousWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
-        boardWithReplenishmentColumn.pulse();
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
 
-        double actualWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        double actualWeight = board.getKinbin().getWeight();
         assertThat(actualWeight, is(previousWeight));
     }
 
     @Test
     public void shouldIncrease0point05PercentOfWeightIfLimitIsReached() {
-        Board boardWithReplenishmentColumn = initializeBoardWithReplanishmentColumn();
-        boardWithReplenishmentColumn.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
-        boardWithReplenishmentColumn.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
-        boardWithReplenishmentColumn.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
-        boardWithReplenishmentColumn.addNewCard(new Card(4, CardType.TECH_DEBT), COLUMN_TEST);
+        board = initializeBoardWithReplanishmentColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
+        board.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
+        board.addNewCard(new Card(4, CardType.TECH_DEBT), COLUMN_TEST);
 
-        double previousWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
-        boardWithReplenishmentColumn.pulse();
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
 
-        double actualWeight = boardWithReplenishmentColumn.getKinbin().getWeight();
+        double actualWeight = board.getKinbin().getWeight();
         double expectedWeight = previousWeight + previousWeight*(0.05/100);
         assertThat(actualWeight, is(expectedWeight));
     }
 
     @Test
     public void shouldIncreaseWeightIfWorkStageIsEmpty() {
-        Board boardWithWorkStageColumn = initializeBoardWithWorkStageColumn();
+        board = initializeBoardWithWorkStageColumn();
 
-        double previousWeight = boardWithWorkStageColumn.getKinbin().getWeight();
-        boardWithWorkStageColumn.pulse();
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
 
-        double actualWeight = boardWithWorkStageColumn.getKinbin().getWeight();
+        double actualWeight = board.getKinbin().getWeight();
         double expectedWeight = previousWeight + previousWeight*(0.01/100);
         assertThat(actualWeight, is(expectedWeight));
     }
 
     @Test
     public void shouldDecreaseWeightIfWorkStageHasOneOrMoreCards() {
-        Board boardWithWorkStage = initializeBoardWithWorkStageColumn();
-        boardWithWorkStage.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
-        boardWithWorkStage.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
-        boardWithWorkStage.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
-        boardWithWorkStage.addNewCard(new Card(4, CardType.TECH_DEBT), COLUMN_TEST);
+        board = initializeBoardWithWorkStageColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
+        board.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
+        board.addNewCard(new Card(4, CardType.TECH_DEBT), COLUMN_TEST);
 
-        double previousWeight = boardWithWorkStage.getKinbin().getWeight();
-        boardWithWorkStage.pulse();
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
 
-        double actualWeight = boardWithWorkStage.getKinbin().getWeight();
+        double actualWeight = board.getKinbin().getWeight();
         double expectedWeight = previousWeight - previousWeight * ((0.01/100)*4);
         assertThat(actualWeight, is(expectedWeight));
     }
