@@ -84,6 +84,13 @@ public class BoardTest {
         return new Board(columns, new Kinbin());
     }
 
+    private Board initializeBoardWithQueueColumn() {
+        Column column = new Column(COLUMN_TEST);
+        column.setAsQueue();
+        Map<String, Column> columns = Maps.newHashMap(COLUMN_TEST, column);
+        return new Board(columns, new Kinbin());
+    }
+
     @Test
     public void shouldInitializeBoardWithSevenColumns() {
         board = initializeStandardBoard();
@@ -175,6 +182,31 @@ public class BoardTest {
 
         double actualWeight = board.getKinbin().getWeight();
         double expectedWeight = previousWeight - previousWeight * ((0.01/100)*4);
+        assertThat(actualWeight, is(expectedWeight));
+    }
+
+    @Test
+    public void shouldNotAffectWeightIfQueueColumnIsEmpty() {
+        board = initializeBoardWithQueueColumn();
+
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
+
+        double actualWeight = board.getKinbin().getWeight();
+        assertThat(actualWeight, is(previousWeight));
+    }
+
+    @Test
+    public void shouldIncreaseWeightIfQueueColumnIsNotEmpty() {
+        board = initializeBoardWithQueueColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(2, CardType.SPIKE), COLUMN_TEST);
+
+        double previousWeight = board.getKinbin().getWeight();
+        board.pulse();
+
+        double actualWeight = board.getKinbin().getWeight();
+        double expectedWeight = previousWeight + previousWeight*(0.01/100);
         assertThat(actualWeight, is(expectedWeight));
     }
 }

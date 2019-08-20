@@ -52,6 +52,12 @@ public class Board {
                     kinbin.decreaseWeight(0.01 * column.getCards().size());
                 }
             }
+
+            if (column.isQueue()) {
+                if (!column.getCards().isEmpty()) {
+                    kinbin.increaseWeight(0.01);
+                }
+            }
         }
     }
 }
