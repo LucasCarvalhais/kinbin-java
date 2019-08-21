@@ -27,11 +27,6 @@ public class BoardTest {
 
     private Board board;
 
-    private Board initializeStandardBoard() {
-        Map<String, Column> columns = initializeColumns();
-        return new Board(columns, new Kinbin());
-    }
-
     private Map<String, Column> initializeColumns() {
         Column backlog = new Column(BACKLOG);
         backlog.setAsStart();
@@ -69,7 +64,12 @@ public class BoardTest {
         return columns;
     }
 
-    private Board initializeBoardWithReplanishmentColumn() {
+    private Board initializeStandardBoard() {
+        Map<String, Column> columns = initializeColumns();
+        return new Board(columns, new Kinbin());
+    }
+
+    private Board initializeBoardWithReplenishmentColumn() {
         Column column = new Column(COLUMN_TEST);
         column.setAsReplenishment();
         column.setLimit(4);
@@ -80,6 +80,7 @@ public class BoardTest {
     private Board initializeBoardWithWorkStageColumn() {
         Column column = new Column(COLUMN_TEST);
         column.setAsWorkStage();
+        column.setLimit(4);
         Map<String, Column> columns = Maps.newHashMap(COLUMN_TEST, column);
         return new Board(columns, new Kinbin());
     }
@@ -87,6 +88,13 @@ public class BoardTest {
     private Board initializeBoardWithQueueColumn() {
         Column column = new Column(COLUMN_TEST);
         column.setAsQueue();
+        Map<String, Column> columns = Maps.newHashMap(COLUMN_TEST, column);
+        return new Board(columns, new Kinbin());
+    }
+
+    private Board initializeBoardWithREndColumn() {
+        Column column = new Column(COLUMN_TEST);
+        column.setAsEnd();
         Map<String, Column> columns = Maps.newHashMap(COLUMN_TEST, column);
         return new Board(columns, new Kinbin());
     }
@@ -103,7 +111,7 @@ public class BoardTest {
 
         board.addNewCard(new Card(1, CardType.STORY), BACKLOG);
 
-        assertThat(board.getColumns().get(BACKLOG).getCards().size(), is(1));
+        assertThat(board.getColumns().get(BACKLOG).getAmountOfCards(), is(1));
     }
 
     @Test
@@ -113,13 +121,13 @@ public class BoardTest {
 
         board.transition(1, BACKLOG, IN_ANALYST);
 
-        assertThat(board.getColumns().get(BACKLOG).getCards().size(), is(0));
-        assertThat(board.getColumns().get(IN_ANALYST).getCards().size(), is(1));
+        assertThat(board.getColumns().get(BACKLOG).getAmountOfCards(), is(0));
+        assertThat(board.getColumns().get(IN_ANALYST).getAmountOfCards(), is(1));
     }
 
     @Test
-    public void shouldRemove0point05PercentOfWeightIfReplanishmentColumnIsEmpty() {
-        board = initializeBoardWithReplanishmentColumn();
+    public void shouldDecreaseWeightIfReplenishmentColumnIsEmpty() {
+        board = initializeBoardWithReplenishmentColumn();
 
         double previousWeight = board.getKinbin().getWeight();
         board.pulse();
@@ -130,8 +138,8 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldNotAddNorRemoveWeightIfReplanishmentColumnIfLimitIsNotReached() {
-        board = initializeBoardWithReplanishmentColumn();
+    public void shouldNotAffectWeightIfReplenishmentColumnHasLimitNotReached() {
+        board = initializeBoardWithReplenishmentColumn();
         board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
 
         double previousWeight = board.getKinbin().getWeight();
@@ -142,8 +150,8 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldIncrease0point05PercentOfWeightIfLimitIsReached() {
-        board = initializeBoardWithReplanishmentColumn();
+    public void shouldIncreaseWeightIfLimitInReplenishmentIsReached() {
+        board = initializeBoardWithReplenishmentColumn();
         board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
         board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
         board.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
@@ -209,4 +217,179 @@ public class BoardTest {
         double expectedWeight = previousWeight + previousWeight*(0.01/100);
         assertThat(actualWeight, is(expectedWeight));
     }
+
+    @Test
+    public void shouldDecreaseEnergyIfReplenishmentIsEmpty() {
+        board = initializeBoardWithReplenishmentColumn();
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        double expectedEnergy = previousEnergy - previousEnergy*(0.05/100);
+        assertThat(actualEnergy, is(expectedEnergy));
+    }
+
+    @Test
+    public void shouldNotAffectEnergyIfReplenishmentLimitIsNotReached() {
+        board = initializeBoardWithReplenishmentColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        assertThat(actualEnergy, is(previousEnergy));
+    }
+
+    @Test
+    public void shouldDecreaseEnergyIfReplenishmentHasLimitReached() {
+        board = initializeBoardWithReplenishmentColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
+        board.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
+        board.addNewCard(new Card(4, CardType.TECH_DEBT), COLUMN_TEST);
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        double expectedEnergy = previousEnergy - previousEnergy*(0.05/100);
+        assertThat(actualEnergy, is(expectedEnergy));
+    }
+
+    @Test
+    public void shouldDecreaseEnergyIfWorkStageIsEmpty() {
+        board = initializeBoardWithWorkStageColumn();
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        double expectedEnergy = previousEnergy - previousEnergy * (0.01/100);
+        assertThat(actualEnergy, is(expectedEnergy));
+    }
+
+    @Test
+    public void shouldIncreaseEnergyIfWorkStageIsNotEmptyAndNotReachLimit() {
+        board = initializeBoardWithWorkStageColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(2, CardType.SPIKE), COLUMN_TEST);
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        double expectedEneergy = previousEnergy + previousEnergy*((0.01/100)*2);
+        assertThat(actualEnergy, is(expectedEneergy));
+    }
+
+    @Test
+    public void shouldDecreaseStronglyEnergyIfLimitInWorkStageIsReached() {
+        board = initializeBoardWithWorkStageColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+        board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
+        board.addNewCard(new Card(3, CardType.SPIKE), COLUMN_TEST);
+        board.addNewCard(new Card(4, CardType.TECH_DEBT), COLUMN_TEST);
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        double expectedEneergy = previousEnergy - previousEnergy*(0.5/100);
+        assertThat(actualEnergy, is(expectedEneergy));
+    }
+
+    @Test
+    public void shouldDecreaseEnergyIfQueueIsNotEmpty() {
+        board = initializeBoardWithQueueColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        double expectedEneergy = previousEnergy - previousEnergy*(0.01/100);
+        assertThat(actualEnergy, is(expectedEneergy));
+    }
+
+    @Test
+    public void shouldNotAffectEnergyIfQueueIsNotEmpty() {
+        board = initializeBoardWithQueueColumn();
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        assertThat(actualEnergy, is(previousEnergy));
+    }
+
+    @Test
+    public void shouldAdd100ToFortuneIfStoryAreInDone() {
+        board = initializeBoardWithREndColumn();
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.pulse();
+
+        double actualFortune = board.getKinbin().getFortune();
+        double expectedFortune = previousFortune + 100;
+        assertThat(actualFortune, is(expectedFortune));
+    }
+
+    @Test
+    public void shouldRemove200FromFortuneIfDefectsAreInWorkStage() {
+        board = initializeBoardWithWorkStageColumn();
+        board.addNewCard(new Card(1, CardType.DEFECT), COLUMN_TEST);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.pulse();
+
+        double actualFortune = board.getKinbin().getFortune();
+        double expectedFortune = previousFortune - 200;
+        assertThat(actualFortune, is(expectedFortune));
+    }
+
+    @Test
+    public void shouldAdd50ToFortuneIfDefectIsInDone() {
+        board = initializeBoardWithREndColumn();
+        board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.pulse();
+
+        double actualFortune = board.getKinbin().getFortune();
+        double expectedFortune = previousFortune + 50;
+        assertThat(actualFortune, is(expectedFortune));
+    }
+
+    @Test
+    public void shouldAdd100ForStoryAnd50ForDefectInDone() {
+        board = initializeBoardWithREndColumn();
+        board.addNewCard(new Card(2, CardType.DEFECT), COLUMN_TEST);
+        board.addNewCard(new Card(1, CardType.STORY), COLUMN_TEST);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.pulse();
+
+        double actualFortune = board.getKinbin().getFortune();
+        double expectedFortune = previousFortune + 50 + 100;
+        assertThat(actualFortune, is(expectedFortune));
+
+    }
+
+    @Test
+    public void shouldRemove100FromFortuneIfSpikeIsInWorkStage() {
+        board = initializeBoardWithWorkStageColumn();
+        board.addNewCard(new Card(1, CardType.SPIKE), COLUMN_TEST);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.pulse();
+
+        double actualFortune = board.getKinbin().getFortune();
+        double expectedFortune = previousFortune - 100;
+        assertThat(actualFortune, is(expectedFortune));
+    }
+
 }

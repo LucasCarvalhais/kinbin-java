@@ -30,6 +30,14 @@ public class Column {
         return name;
     }
 
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public int getAmountOfCards() {
+        return cards.size();
+    }
+
     public void setLimit(int limit) {
         this.limit = limit;
     }
@@ -76,10 +84,6 @@ public class Column {
 
     public void setAsEnd() {
         end = true;
-    }
-
-    public List<Card> getCards() {
-        return cards;
     }
 
     public void addCard(Card card) {

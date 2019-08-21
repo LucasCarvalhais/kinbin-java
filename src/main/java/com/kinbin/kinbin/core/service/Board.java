@@ -2,6 +2,7 @@ package com.kinbin.kinbin.core.service;
 
 import com.kinbin.kinbin.core.exception.CardNotFoundException;
 import com.kinbin.kinbin.core.model.Card;
+import com.kinbin.kinbin.core.model.CardType;
 import com.kinbin.kinbin.core.model.Column;
 import com.kinbin.kinbin.core.model.Kinbin;
 
@@ -37,27 +38,79 @@ public class Board {
     public void pulse() {
         for (Column column : columns.values()) {
             if (column.isReplenishment()) {
-                if (column.getCards().isEmpty()) {
-                    kinbin.decreaseWeight(0.05);
-                }
-                if (column.getCards().size() >= column.getLimit()) {
-                    kinbin.increaseWeight(0.05);
-                }
+                updateKinbinIfReplenishmentColumnIsEmpty(column);
+                updateKinbinIfReplenishmentColumnHasLimitReached(column);
             }
 
             if (column.isWorkStage()) {
-                if (column.getCards().isEmpty()) {
-                    kinbin.increaseWeight(0.01);
-                } else {
-                    kinbin.decreaseWeight(0.01 * column.getCards().size());
-                }
+                updateKinbinForWorkStageColumn(column);
+                evaluateFortuneIfThereAreDefectsOrSpikes(column);
             }
 
             if (column.isQueue()) {
-                if (!column.getCards().isEmpty()) {
-                    kinbin.increaseWeight(0.01);
-                }
+                updateKinbinIfQueueColumnIsNotEmpty(column);
             }
+
+            if (column.isEnd()) {
+                evaluateCardsInDone(column);
+            }
+        }
+    }
+
+    private void evaluateCardsInDone(Column column) {
+        for (Card card : column.getCards()) {
+            if (card.getCardType() == CardType.STORY) {
+                kinbin.addFortune(100);
+            }
+            if (card.getCardType() == CardType.DEFECT) {
+                kinbin.addFortune(50);
+            }
+        }
+    }
+
+    private void updateKinbinIfQueueColumnIsNotEmpty(Column column) {
+        if (!column.getCards().isEmpty()) {
+            kinbin.increaseWeight(0.01);
+            kinbin.decreaseEnergy(0.01);
+        }
+    }
+
+    private void evaluateFortuneIfThereAreDefectsOrSpikes(Column column) {
+        for (Card card : column.getCards()) {
+            if (card.getCardType() == CardType.DEFECT) {
+                kinbin.removeFortune(200);
+            }
+            if (card.getCardType() == CardType.SPIKE) {
+                kinbin.removeFortune(100);
+            }
+        }
+    }
+
+    private void updateKinbinForWorkStageColumn(Column column) {
+        if (column.getCards().isEmpty()) {
+            kinbin.increaseWeight(0.01);
+            kinbin.decreaseEnergy(0.01);
+        } else {
+            kinbin.decreaseWeight(0.01 * column.getAmountOfCards());
+            if (column.getAmountOfCards() >= column.getLimit()) {
+                kinbin.decreaseEnergy(0.5);
+            } else {
+                kinbin.increaseEnergy(0.01 * column.getAmountOfCards());
+            }
+        }
+    }
+
+    private void updateKinbinIfReplenishmentColumnHasLimitReached(Column column) {
+        if (column.getCards().size() >= column.getLimit()) {
+            kinbin.increaseWeight(0.05);
+            kinbin.decreaseEnergy(0.05);
+        }
+    }
+
+    private void updateKinbinIfReplenishmentColumnIsEmpty(Column column) {
+        if (column.getCards().isEmpty()) {
+            kinbin.decreaseWeight(0.05);
+            kinbin.decreaseEnergy(0.05);
         }
     }
 }
