@@ -71,16 +71,16 @@ public class ColumnTest {
 
     @Test
     public void shouldAddCard() {
-        Card card = new Card(1, CardType.STORY);
+        Card card = new Card("1", CardType.STORY);
         column.addCard(card);
         assertThat(column.getCards(), is(Arrays.asList(card)));
     }
 
     @Test
     public void shouldRemoveCard() throws CardNotFoundException {
-        Card card = new Card(2, CardType.DEFECT);
+        Card card = new Card("2", CardType.DEFECT);
         column.addCard(card);
-        Card removedCard = column.removeCard(2);
+        Card removedCard = column.removeCard("2");
         assertThat(column.getCards(), is(Collections.EMPTY_LIST));
         assertThat(removedCard, is(card));
     }
@@ -88,7 +88,7 @@ public class ColumnTest {
     @Test
     public void shouldThrowExceptionIfCardIsNotFound() throws CardNotFoundException {
         expection.expect(CardNotFoundException.class);
-        column.removeCard(3);
+        column.removeCard("3");
     }
 
 }

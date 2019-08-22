@@ -90,15 +90,15 @@ public class Column {
         cards.add(card);
     }
 
-    public Card removeCard(int cardNumber) throws CardNotFoundException {
-        Card card = findCard(cardNumber);
+    public Card removeCard(String cardId) throws CardNotFoundException {
+        Card card = findCard(cardId);
         cards.remove(card);
         return card;
     }
 
-    private Card findCard(int cardNumber) throws CardNotFoundException {
+    private Card findCard(String cardId) throws CardNotFoundException {
         return cards.stream()
-                .filter(card -> card.getCardNumber() == cardNumber)
+                .filter(card -> card.getId().equals(cardId))
                 .findFirst()
                 .orElseThrow(CardNotFoundException::new);
     }

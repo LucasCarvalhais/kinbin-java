@@ -30,8 +30,8 @@ public class Board {
         columns.get(column).addCard(card);
     }
 
-    public void transition(int cardNumber, String columnFrom, String columnTo) throws CardNotFoundException {
-        Card card = columns.get(columnFrom).removeCard(cardNumber);
+    public void transition(String cardId, String columnFrom, String columnTo) throws CardNotFoundException {
+        Card card = columns.get(columnFrom).removeCard(cardId);
         columns.get(columnTo).addCard(card);
     }
 
