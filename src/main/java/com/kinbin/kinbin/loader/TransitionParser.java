@@ -4,6 +4,9 @@ import com.kinbin.kinbin.core.model.Card;
 import com.kinbin.kinbin.core.model.CardType;
 import com.kinbin.kinbin.core.model.Transition;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,6 +63,28 @@ public class TransitionParser {
             }
         }
 
+        return transitions;
+    }
+
+    public List<Transition> parse(BufferedReader bufferedReader) throws ParseException {
+        String line;
+        List<String> lines = new ArrayList<>();
+        try{
+            while ((line = bufferedReader.readLine()) != null) {
+                lines.add(line);
+            }
+            return parse(lines);
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+    public List<Transition> parse(List<String> file) throws ParseException {
+        parseColumnHeaders(file.get(0));
+        List<Transition> transitions = new ArrayList<>();
+        for (int i = 1; i < file.size(); i++) {
+            transitions.addAll(extractTransitions(file.get(i)));
+        }
         return transitions;
     }
 }

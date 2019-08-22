@@ -6,10 +6,16 @@ import com.kinbin.kinbin.core.model.Transition;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class TransitionParserTest {
@@ -84,5 +90,76 @@ public class TransitionParserTest {
         List<Transition> transitions = transitionParser.extractTransitions(lineTransitions);
 
         assertThat(transitions.size(), is(5));
+    }
+
+    @Test
+    public void shouldParseFile() throws ParseException {
+        List<String> fileTest = Arrays.asList(
+                "ID,Link,Name,New,In Analysis,Ready,In Progress,Waiting,Accepted,Done,Type,",
+                "BKG-1,https://its.it.lan.com/browse/BKG-1,,2015-11-12,,2015-11-20,2015-12-01,,2015-12-23,2016-01-18,Bug,",
+                "BKG-2,https://its.it.lan.com/browse/BKG-2,,2015-11-10,,2015-11-17,2015-11-17,,2015-11-18,2015-11-20,Bug,"
+        );
+
+        List<Transition> expectedTransitions = new ArrayList<>();
+        expectedTransitions.add(new Transition(
+                new Card("BKG-1", CardType.DEFECT),
+                "None",
+                "New",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-12")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-1", CardType.DEFECT),
+                "New",
+                "Ready",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-20")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-1", CardType.DEFECT),
+                "Ready",
+                "In Progress",
+                new SimpleDateFormat("yyyy" + "-MM-dd").parse("2015-12-01")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-1", CardType.DEFECT),
+                "In Progress",
+                "Accepted",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-12-23")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-1", CardType.DEFECT),
+                "Accepted",
+                "Done",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-18")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-2", CardType.DEFECT),
+                "None",
+                "New",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-10")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-2", CardType.DEFECT),
+                "New",
+                "Ready",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-17")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-2", CardType.DEFECT),
+                "Ready",
+                "In Progress",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-17")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-2", CardType.DEFECT),
+                "In Progress",
+                "Accepted",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-18")));
+        expectedTransitions.add(new Transition(
+                new Card("BKG-2", CardType.DEFECT),
+                "Accepted",
+                "Done",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-20")));
+
+        List<Transition> output = transitionParser.parse(fileTest);
+
+        assertEquals(expectedTransitions.size(), output.size());
+        for (int i = 0; i < expectedTransitions.size(); i++) {
+            assertEquals(expectedTransitions.get(i).getCard().getId(), output.get(i).getCard().getId());
+            assertEquals(expectedTransitions.get(i).getColumnFrom(), output.get(i).getColumnFrom());
+            assertEquals(expectedTransitions.get(i).getColumnTo(), output.get(i).getColumnTo());
+            assertEquals(expectedTransitions.get(i).getTimestamp(), output.get(i).getTimestamp());
+        }
     }
 }

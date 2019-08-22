@@ -15,6 +15,22 @@ public class Transition {
         this.timestamp = timestamp;
     }
 
+    public Card getCard() {
+        return card;
+    }
+
+    public String getColumnFrom() {
+        return columnFrom;
+    }
+
+    public String getColumnTo() {
+        return columnTo;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
     @Override
     public String toString() {
         return "[Card: " + card.getId() + " " + card.getCardType() + "\n" +
