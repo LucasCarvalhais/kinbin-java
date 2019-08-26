@@ -39,7 +39,7 @@ public class TransitionParserTest {
         String line = "BKG-1,https://its.it.lan.com/browse/BKG-1,,2015-11-12,,2015-11-20,2015-12-01,,2015-12-23," +
                 "2016-01-18,Story,";
 
-        Card card = transitionParser.extractCard(line);
+        Card card = transitionParser.parseCard(line);
 
         assertThat(card.getId(), is("BKG-1"));
         assertThat(card.getCardType(), is(CardType.STORY));
@@ -50,7 +50,7 @@ public class TransitionParserTest {
         String line = "BKG-1,https://its.it.lan.com/browse/BKG-1,,2015-11-12,,2015-11-20,2015-12-01,,2015-12-23," +
                 "2016-01-18,Bug,";
 
-        Card card = transitionParser.extractCard(line);
+        Card card = transitionParser.parseCard(line);
 
         assertThat(card.getId(), is("BKG-1"));
         assertThat(card.getCardType(), is(CardType.DEFECT));
@@ -61,7 +61,7 @@ public class TransitionParserTest {
         String line = "BKG-1,https://its.it.lan.com/browse/BKG-1,,2015-11-12,,2015-11-20,2015-12-01,,2015-12-23," +
                 "2016-01-18,Spike,";
 
-        Card card = transitionParser.extractCard(line);
+        Card card = transitionParser.parseCard(line);
 
         assertThat(card.getId(), is("BKG-1"));
         assertThat(card.getCardType(), is(CardType.SPIKE));
@@ -72,7 +72,7 @@ public class TransitionParserTest {
         String line = "BKG-1,https://its.it.lan.com/browse/BKG-1,,2015-11-12,,2015-11-20,2015-12-01,,2015-12-23," +
                 "2016-01-18,Task,";
 
-        Card card = transitionParser.extractCard(line);
+        Card card = transitionParser.parseCard(line);
 
         assertThat(card.getId(), is("BKG-1"));
         assertThat(card.getCardType(), is(CardType.TECH_DEBT));
@@ -85,7 +85,7 @@ public class TransitionParserTest {
         String lineTransitions = "BKG-1,https://its.it.lan.com/browse/BKG-1,,2015-11-12,,2015-11-20,2015-12-01,," +
                 "2015-12-23,2016-01-18,Bug,";
 
-        List<Transition> transitions = transitionParser.extractTransitions(lineTransitions);
+        List<Transition> transitions = transitionParser.parseTransitions(lineTransitions);
 
         assertThat(transitions.size(), is(5));
     }

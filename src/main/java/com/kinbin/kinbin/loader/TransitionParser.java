@@ -6,8 +6,6 @@ import com.kinbin.kinbin.core.model.Transition;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,7 +21,7 @@ public class TransitionParser {
         return columnHeaders;
     }
 
-    public Card extractCard(String line) {
+    public Card parseCard(String line) {
         String[] informations = line.split(",");
         String id = informations[0];
         CardType cardType = parseCardType(informations[informations.length-1]);
@@ -46,12 +44,14 @@ public class TransitionParser {
         return null;
     }
 
-    public List<Transition> extractTransitions(String line) throws ParseException {
+    public List<Transition> parseTransitions(String line) throws ParseException {
         String[] informations = line.split(",");
-        List<Transition> transitions = new ArrayList<>();
+        Card card = parseCard(line);
+        return extractTransitions(informations, card, "None");
+    }
 
-        Card card = extractCard(line);
-        String columnFrom = "None";
+    private List<Transition> extractTransitions(String[] informations, Card card, String columnFrom) throws ParseException {
+        List<Transition> transitions = new ArrayList<>();
 
         for (int i = 3; i < informations.length - 1; i++) {
             if (!informations[i].equals("")) {
@@ -66,7 +66,7 @@ public class TransitionParser {
         return transitions;
     }
 
-    public List<Transition> parse(BufferedReader bufferedReader) throws ParseException {
+    public List<Transition> parse(BufferedReader bufferedReader) {
         String line;
         List<String> lines = new ArrayList<>();
         try{
@@ -75,6 +75,9 @@ public class TransitionParser {
             }
             return parse(lines);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -82,9 +85,11 @@ public class TransitionParser {
     public List<Transition> parse(List<String> file) throws ParseException {
         parseColumnHeaders(file.get(0));
         List<Transition> transitions = new ArrayList<>();
+
         for (int i = 1; i < file.size(); i++) {
-            transitions.addAll(extractTransitions(file.get(i)));
+            transitions.addAll(parseTransitions(file.get(i)));
         }
+
         return transitions;
     }
 }
