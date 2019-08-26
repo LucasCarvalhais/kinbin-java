@@ -52,12 +52,12 @@ public class TransitionParser {
 
         Card card = extractCard(line);
         String columnFrom = "None";
+
         for (int i = 3; i < informations.length - 1; i++) {
             if (!informations[i].equals("")) {
                 String columnTo = columnHeaders[i];
                 Date timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(informations[i]);
-                Transition transition =
-                        new Transition(card, columnFrom, columnTo, timestamp);
+                Transition transition = new Transition(card, columnFrom, columnTo, timestamp);
                 transitions.add(transition);
                 columnFrom = columnTo;
             }

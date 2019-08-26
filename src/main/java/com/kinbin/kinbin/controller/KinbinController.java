@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class KinbinController {
 
     @GetMapping("/")
-    public String homePage() {
-        return "homePage";
+    public String kinbinpage() {
+        return "kinbin";
     }
 
 }

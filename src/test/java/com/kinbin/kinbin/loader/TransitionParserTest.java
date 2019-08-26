@@ -6,12 +6,10 @@ import com.kinbin.kinbin.core.model.Transition;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
