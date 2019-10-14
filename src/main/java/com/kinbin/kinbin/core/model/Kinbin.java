@@ -4,7 +4,6 @@ public class Kinbin {
     private static final double DEFAULT_WEIGHT = 50;
     private static final double DEFAULT_ENERGY = 50;
     private static final double DEFAULT_FORTUNE = 250;
-    private static final Mood DEFAULT_MOOD = Mood.NEUTRAL;
 
     private KinbinStatus kinbinStatus;
     private double weight;
@@ -16,7 +15,7 @@ public class Kinbin {
         this.weight = DEFAULT_WEIGHT;
         this.energy = DEFAULT_ENERGY;
         this.fortune = DEFAULT_FORTUNE;
-        this.mood = DEFAULT_MOOD;
+
         kinbinStatus = new KinbinStatus(this);
         kinbinStatus.updateStatus();
     }

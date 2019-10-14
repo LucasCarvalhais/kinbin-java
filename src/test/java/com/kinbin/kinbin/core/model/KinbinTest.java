@@ -20,7 +20,6 @@ public class KinbinTest {
         assertThat(kinbin.getEnergy(), is(50.0));
         assertThat(kinbin.getWeight(), is(50.0));
         assertThat(kinbin.getFortune(), is(250.0));
-        assertThat(kinbin.getMood(), is(Mood.NEUTRAL));
     }
 
     @Test

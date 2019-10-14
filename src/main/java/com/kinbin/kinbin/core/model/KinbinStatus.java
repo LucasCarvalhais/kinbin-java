@@ -4,6 +4,7 @@ public class KinbinStatus {
     private final Kinbin kinbin;
     private FortuneStatus fortuneStatus;
     private EnergyStatus energyStatus;
+    private WeightStatus weightStatus;
 
     public KinbinStatus(Kinbin kinbin) {
         this.kinbin = kinbin;
@@ -12,6 +13,31 @@ public class KinbinStatus {
     public void updateStatus() {
         updateFortuneStatus();
         updateEnergyStatus();
+        updateWeightStatus();
+    }
+
+    private void updateWeightStatus() {
+        if (kinbin.getWeight() <= 0) {
+            weightStatus = WeightStatus.DEAD;
+        }
+        if (kinbin.getWeight() > 0 && kinbin.getWeight() < 30) {
+            weightStatus = WeightStatus.STARVING;
+        }
+        if (kinbin.getWeight() >= 30 && kinbin.getWeight() < 40) {
+            weightStatus = WeightStatus.SLIM;
+        }
+        if (kinbin.getWeight() >= 40 && kinbin.getWeight() < 60) {
+            weightStatus = WeightStatus.NORMAL;
+        }
+        if (kinbin.getWeight() >= 60 && kinbin.getWeight() < 70) {
+            weightStatus = WeightStatus.OVERWEIGHT;
+        }
+        if (kinbin.getWeight() >= 70 && kinbin.getWeight() < 100) {
+            weightStatus = WeightStatus.OBESE;
+        }
+        if (kinbin.getWeight() >= 100) {
+            weightStatus = WeightStatus.DANGER_ZONE;
+        }
     }
 
     private void updateEnergyStatus() {
@@ -59,5 +85,9 @@ public class KinbinStatus {
 
     public EnergyStatus getEnergyStatus() {
         return energyStatus;
+    }
+
+    public WeightStatus getWeightStatus() {
+        return weightStatus;
     }
 }
