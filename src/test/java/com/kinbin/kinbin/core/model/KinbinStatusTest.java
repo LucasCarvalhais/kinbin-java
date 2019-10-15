@@ -194,13 +194,13 @@ public class KinbinStatusTest {
     }
 
     @Test
-    public void kinbinShouldHaveEnergyStatusAsDangerZoneIfItIsEquals100() {
+    public void kinbinShouldHaveEnergyStatusAsTooHighIfItIsEquals100() {
         kinbin.increaseEnergy(100);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
 
-        assertThat(kinbinStatus.getEnergyStatus(), is(EnergyStatus.DANGER_ZONE));
+        assertThat(kinbinStatus.getEnergyStatus(), is(EnergyStatus.TOO_HIGH));
     }
 
     @Test
