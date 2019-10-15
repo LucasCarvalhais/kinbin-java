@@ -38,36 +38,562 @@ public class Kinbin {
 
     public void increaseWeight(double percent) {
         weight += weight * (percent/100);
-        kinbinStatus.updateStatus();
     }
 
     public void decreaseWeight(double percent) {
         weight -= weight * (percent/100);
-        kinbinStatus.updateStatus();
     }
 
     public void increaseEnergy(double percent) {
         energy += energy * (percent/100);
-        kinbinStatus.updateStatus();
     }
 
     public void decreaseEnergy(double percent) {
         energy -= energy * (percent/100);
-        kinbinStatus.updateStatus();
     }
 
     public void addFortune(double value) {
         fortune += value;
-        kinbinStatus.updateStatus();
     }
 
     public void removeFortune(double value) {
         fortune -= value;
-        kinbinStatus.updateStatus();
     }
 
     public void updateMood() {
+        kinbinStatus.updateStatus();
 
+        if (isKinbinDesesperate()) {
+            mood = Mood.DESESPERATE;
+        } else if (isKinbinWorried()) {
+            mood = Mood.WORRIED;
+        } else if (isKinbinSad()) {
+            mood = Mood.SAD;
+        } else if (isKinbinAngry()) {
+            mood = Mood.ANGRY;
+        } else if (isKinbinNeutral()) {
+            mood = Mood.NEUTRAL;
+        } else if (isKinbinOptimism()) {
+            mood = Mood.OPTIMISM;
+        } else if (isKinbinHappy()) {
+            mood = Mood.HAPPY;
+        } else {
+            // Error!
+        }
+    }
+
+    private boolean isKinbinHappy() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT);
+    }
+
+    private boolean isKinbinOptimism() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT);
+    }
+
+    private boolean isKinbinNeutral() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT);
+    }
+
+    private boolean isKinbinAngry() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT);
+    }
+
+    private boolean isKinbinSad() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE);
+    }
+
+    private boolean isKinbinWorried() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE);
+    }
+
+    private boolean isKinbinDesesperate() {
+        return (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.STARVING)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.SLIM)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.NORMAL)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OVERWEIGHT)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.RICH
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MILLIONAIRE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MEDIUM
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.LOW
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.MEDIUM
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.MISERABLE
+                    && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                    && kinbinStatus.getWeightStatus() == WeightStatus.OBESE)
+
+                || (kinbinStatus.getFortuneStatus() == FortuneStatus.POOR
+                && kinbinStatus.getEnergyStatus() == EnergyStatus.TOO_HIGH
+                && kinbinStatus.getWeightStatus() == WeightStatus.OBESE);
     }
 
 }

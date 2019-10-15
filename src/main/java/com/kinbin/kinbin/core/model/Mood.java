@@ -1,9 +1,12 @@
 package com.kinbin.kinbin.core.model;
 
 public enum Mood {
+    DEAD,
     DESESPERATE,
     WORRIED,
-    OPTIMISTIC,
+    SAD,
+    ANGRY,
     NEUTRAL,
+    OPTIMISM,
     HAPPY
 }
