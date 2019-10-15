@@ -53,10 +53,10 @@ public class KinbinStatus {
         if (kinbin.getEnergy() > 60 && kinbin.getEnergy() <= 80) {
             energyStatus = EnergyStatus.HIGH;
         }
-        if (kinbin.getEnergy() > 80 && kinbin.getEnergy() < 100) {
+        if (kinbin.getEnergy() > 80 && kinbin.getEnergy() <= 100) {
             energyStatus = EnergyStatus.TOO_HIGH;
         }
-        if (kinbin.getEnergy() >= 100) {
+        if (kinbin.getEnergy() > 100) {
             energyStatus = EnergyStatus.DANGER_ZONE;
         }
     }
