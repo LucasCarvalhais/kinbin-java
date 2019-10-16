@@ -3,6 +3,8 @@ package com.kinbin.kinbin.core.model;
 import com.kinbin.kinbin.core.service.KinbinMood;
 import com.kinbin.kinbin.core.service.KinbinStatus;
 
+import java.rmi.UnexpectedException;
+
 public class Kinbin {
     private static final double DEFAULT_WEIGHT = 50;
     private static final double DEFAULT_ENERGY = 50;
@@ -66,7 +68,11 @@ public class Kinbin {
     }
 
     public void updateMood() {
-        mood = kinbinMood.determineMood();
+        try {
+            mood = kinbinMood.determineMood();
+        } catch (UnexpectedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

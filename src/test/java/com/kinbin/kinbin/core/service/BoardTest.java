@@ -17,10 +17,10 @@ import static org.junit.Assert.assertThat;
 public class BoardTest {
 
     public static final String BACKLOG = "Backlog";
-    public static final String IN_ANALYST = "In Analyst";
-    public static final String READ_FOR_DEVELOPMENT = "Read for Development";
-    public static final String DEVELOPMENT = "Development";
-    public static final String IN_QUALITY_ANALYST = "In Quality Analyst";
+    public static final String IN_ANALYSIS = "In Analysis";
+    public static final String READY = "Ready";
+    public static final String IN_PROGRESS = "In Progress";
+    public static final String WAITING = "Waiting";
     public static final String ACCEPTED = "Accepted";
     public static final String DONE = "Done";
     public static final String COLUMN_TEST = "Column Test";
@@ -32,19 +32,19 @@ public class BoardTest {
         backlog.setAsStart();
         backlog.setAsQueue();
 
-        Column inAnalyst = new Column(IN_ANALYST);
-        inAnalyst.isQueue();
+        Column inAnalysis = new Column(IN_ANALYSIS);
+        inAnalysis.setAsQueue();
 
-        Column readyForDev = new Column(READ_FOR_DEVELOPMENT);
-        readyForDev.setAsReplenishment();
-        readyForDev.setAsQueue();
-        readyForDev.setLimit(5);
+        Column ready = new Column(READY);
+        ready.setAsReplenishment();
+        ready.setAsQueue();
+        ready.setLimit(5);
 
-        Column development = new Column(DEVELOPMENT);
-        development.setAsWorkStage();
+        Column inProgress = new Column(IN_PROGRESS);
+        inProgress.setAsWorkStage();
 
-        Column inQA = new Column(IN_QUALITY_ANALYST);
-        inQA.isQueue();
+        Column waiting = new Column(WAITING);
+        waiting.isQueue();
 
         Column accepted = new Column(ACCEPTED);
         accepted.isWorkStage();
@@ -55,10 +55,10 @@ public class BoardTest {
 
         Map<String, Column> columns = new HashMap<>();
         columns.put(BACKLOG, backlog);
-        columns.put(IN_ANALYST, inAnalyst);
-        columns.put(READ_FOR_DEVELOPMENT, readyForDev);
-        columns.put(DEVELOPMENT, development);
-        columns.put(IN_QUALITY_ANALYST, inQA);
+        columns.put(IN_ANALYSIS, inAnalysis);
+        columns.put(READY, ready);
+        columns.put(IN_PROGRESS, inProgress);
+        columns.put(WAITING, waiting);
         columns.put(ACCEPTED, accepted);
         columns.put(DONE, done);
         return columns;
@@ -92,7 +92,7 @@ public class BoardTest {
         return new Board(columns, new Kinbin());
     }
 
-    private Board initializeBoardWithREndColumn() {
+    private Board initializeBoardWithEndColumn() {
         Column column = new Column(COLUMN_TEST);
         column.setAsEnd();
         Map<String, Column> columns = Maps.newHashMap(COLUMN_TEST, column);
@@ -115,14 +115,14 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldTransferFromBacklogToInAnalyst() throws CardNotFoundException {
+    public void shouldTransferFromBacklogToInAnalysis() throws CardNotFoundException {
         board = initializeStandardBoard();
         board.addNewCard(new Card("1", CardType.STORY), BACKLOG);
 
-        board.transition("1", BACKLOG, IN_ANALYST);
+        board.transition("1", BACKLOG, IN_ANALYSIS);
 
         assertThat(board.getColumns().get(BACKLOG).getAmountOfCards(), is(0));
-        assertThat(board.getColumns().get(IN_ANALYST).getAmountOfCards(), is(1));
+        assertThat(board.getColumns().get(IN_ANALYSIS).getAmountOfCards(), is(1));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class BoardTest {
         board.pulse();
 
         double actualWeight = board.getKinbin().getWeight();
-        double expectedWeight = previousWeight - previousWeight * ((0.01/100)*4);
+        double expectedWeight = previousWeight - (previousWeight * ((0.01/100))*4);
         assertThat(actualWeight, is(expectedWeight));
     }
 
@@ -327,7 +327,7 @@ public class BoardTest {
 
     @Test
     public void shouldAdd100ToFortuneIfStoryAreInDone() {
-        board = initializeBoardWithREndColumn();
+        board = initializeBoardWithEndColumn();
         board.addNewCard(new Card("1", CardType.STORY), COLUMN_TEST);
 
         double previousFortune = board.getKinbin().getFortune();
@@ -339,7 +339,7 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldRemove200FromFortuneIfDefectsAreInWorkStage() {
+    public void shouldRemove1FromFortuneIfDefectsAreInWorkStage() {
         board = initializeBoardWithWorkStageColumn();
         board.addNewCard(new Card("1", CardType.DEFECT), COLUMN_TEST);
 
@@ -347,40 +347,12 @@ public class BoardTest {
         board.pulse();
 
         double actualFortune = board.getKinbin().getFortune();
-        double expectedFortune = previousFortune - 200;
+        double expectedFortune = previousFortune - 1;
         assertThat(actualFortune, is(expectedFortune));
     }
 
     @Test
-    public void shouldAdd50ToFortuneIfDefectIsInDone() {
-        board = initializeBoardWithREndColumn();
-        board.addNewCard(new Card("2", CardType.DEFECT), COLUMN_TEST);
-
-        double previousFortune = board.getKinbin().getFortune();
-        board.pulse();
-
-        double actualFortune = board.getKinbin().getFortune();
-        double expectedFortune = previousFortune + 50;
-        assertThat(actualFortune, is(expectedFortune));
-    }
-
-    @Test
-    public void shouldAdd100ForStoryAnd50ForDefectInDone() {
-        board = initializeBoardWithREndColumn();
-        board.addNewCard(new Card("2", CardType.DEFECT), COLUMN_TEST);
-        board.addNewCard(new Card("1", CardType.STORY), COLUMN_TEST);
-
-        double previousFortune = board.getKinbin().getFortune();
-        board.pulse();
-
-        double actualFortune = board.getKinbin().getFortune();
-        double expectedFortune = previousFortune + 50 + 100;
-        assertThat(actualFortune, is(expectedFortune));
-
-    }
-
-    @Test
-    public void shouldRemove100FromFortuneIfSpikeIsInWorkStage() {
+    public void shouldRemove5centsFromFortuneIfSpikeIsInWorkStage() {
         board = initializeBoardWithWorkStageColumn();
         board.addNewCard(new Card("1", CardType.SPIKE), COLUMN_TEST);
 
@@ -388,7 +360,7 @@ public class BoardTest {
         board.pulse();
 
         double actualFortune = board.getKinbin().getFortune();
-        double expectedFortune = previousFortune - 100;
+        double expectedFortune = previousFortune - 0.5;
         assertThat(actualFortune, is(expectedFortune));
     }
 

@@ -62,9 +62,6 @@ public class Board {
             if (card.getCardType() == CardType.STORY) {
                 kinbin.addFortune(100);
             }
-            if (card.getCardType() == CardType.DEFECT) {
-                kinbin.addFortune(50);
-            }
         }
     }
 
@@ -78,10 +75,10 @@ public class Board {
     private void evaluateFortuneIfThereAreDefectsOrSpikes(Column column) {
         for (Card card : column.getCards()) {
             if (card.getCardType() == CardType.DEFECT) {
-                kinbin.removeFortune(200);
+                kinbin.removeFortune(1);
             }
             if (card.getCardType() == CardType.SPIKE) {
-                kinbin.removeFortune(100);
+                kinbin.removeFortune(0.5);
             }
         }
     }
