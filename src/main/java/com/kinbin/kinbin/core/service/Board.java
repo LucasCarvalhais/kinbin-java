@@ -33,81 +33,62 @@ public class Board {
     public void transition(String cardId, String columnFrom, String columnTo) throws CardNotFoundException {
         Card card = columns.get(columnFrom).removeCard(cardId);
         columns.get(columnTo).addCard(card);
-    }
-
-    public void pulse() {
-        for (Column column : columns.values()) {
-            if (column.isReplenishment()) {
-                updateKinbinIfReplenishmentColumnIsEmpty(column);
-                updateKinbinIfReplenishmentColumnHasLimitReached(column);
-            }
-
-            if (column.isWorkStage()) {
-                updateKinbinForWorkStageColumn(column);
-                evaluateFortuneIfThereAreDefectsOrSpikes(column);
-            }
-
-            if (column.isQueue()) {
-                updateKinbinIfQueueColumnIsNotEmpty(column);
-            }
-
-            if (column.isEnd()) {
-                evaluateCardsInDone(column);
-            }
-        }
-    }
-
-    private void evaluateCardsInDone(Column column) {
-        for (Card card : column.getCards()) {
+        if (columns.get(columnTo).isEnd()) {
             if (card.getCardType() == CardType.STORY) {
                 kinbin.addFortune(100);
             }
         }
     }
 
-    private void updateKinbinIfQueueColumnIsNotEmpty(Column column) {
-        if (!column.getCards().isEmpty()) {
-            kinbin.increasePercentWeight(0.01);
-            kinbin.decreasePercentEnergy(0.01);
-        }
-    }
-
-    private void evaluateFortuneIfThereAreDefectsOrSpikes(Column column) {
-        for (Card card : column.getCards()) {
-            if (card.getCardType() == CardType.DEFECT) {
-                kinbin.removeFortune(1);
+    public void pulse() {
+        for (Column column : columns.values()) {
+            if (column.isReplenishment()) {
+                if (column.getCards().isEmpty()) {
+                    kinbin.decreasePercentWeight(0.05);
+                    kinbin.decreasePercentEnergy(0.05);
+                }
+                if (column.getCards().size() >= column.getLimit()) {
+                    kinbin.increasePercentWeight(0.05);
+                    kinbin.decreasePercentEnergy(0.05);
+                }
             }
-            if (card.getCardType() == CardType.SPIKE) {
-                kinbin.removeFortune(0.5);
+
+            if (column.isWorkStage()) {
+                if (column.getCards().isEmpty()) {
+                    kinbin.increasePercentWeight(0.01);
+                    kinbin.decreasePercentEnergy(0.01);
+                } else {
+                    kinbin.decreasePercentWeight(0.01 * column.getAmountOfCards());
+                    if (column.getAmountOfCards() >= column.getLimit()) {
+                        kinbin.decreasePercentEnergy(0.5);
+                    } else {
+                        kinbin.increasePercentEnergy(0.01 * column.getAmountOfCards());
+                    }
+                }
+                for (Card card : column.getCards()) {
+                    if (card.getCardType() == CardType.DEFECT) {
+                        kinbin.removeFortune(1);
+                    }
+                    if (card.getCardType() == CardType.SPIKE) {
+                        kinbin.removeFortune(0.5);
+                    }
+                }
             }
-        }
-    }
 
-    private void updateKinbinForWorkStageColumn(Column column) {
-        if (column.getCards().isEmpty()) {
-            kinbin.increasePercentWeight(0.01);
-            kinbin.decreasePercentEnergy(0.01);
-        } else {
-            kinbin.decreasePercentWeight(0.01 * column.getAmountOfCards());
-            if (column.getAmountOfCards() >= column.getLimit()) {
-                kinbin.decreasePercentEnergy(0.5);
-            } else {
-                kinbin.increasePercentEnergy(0.01 * column.getAmountOfCards());
+            if (column.isQueue()) {
+                if (!column.getCards().isEmpty()) {
+                    kinbin.increasePercentWeight(0.01);
+                    kinbin.decreasePercentEnergy(0.01);
+                }
+                for (Card card : column.getCards()) {
+                    if (card.getCardType() == CardType.DEFECT) {
+                        kinbin.removeFortune(1);
+                    }
+                    if (card.getCardType() == CardType.SPIKE) {
+                        kinbin.removeFortune(0.5);
+                    }
+                }
             }
-        }
-    }
-
-    private void updateKinbinIfReplenishmentColumnHasLimitReached(Column column) {
-        if (column.getCards().size() >= column.getLimit()) {
-            kinbin.increasePercentWeight(0.05);
-            kinbin.decreasePercentEnergy(0.05);
-        }
-    }
-
-    private void updateKinbinIfReplenishmentColumnIsEmpty(Column column) {
-        if (column.getCards().isEmpty()) {
-            kinbin.decreasePercentWeight(0.05);
-            kinbin.decreasePercentEnergy(0.05);
         }
     }
 }

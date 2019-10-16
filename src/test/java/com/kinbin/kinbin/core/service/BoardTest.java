@@ -315,7 +315,7 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldNotAffectEnergyIfQueueIsNotEmpty() {
+    public void shouldNotAffectEnergyIfQueueIsNEmpty() {
         board = initializeBoardWithQueueColumn();
 
         double previousEnergy = board.getKinbin().getEnergy();
@@ -326,21 +326,21 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldAdd100ToFortuneIfStoryAreInDone() {
-        board = initializeBoardWithEndColumn();
-        board.addNewCard(new Card("1", CardType.STORY), COLUMN_TEST);
+    public void shouldRemove1FromFortuneIfDefectsAreInWorkStage() {
+        board = initializeBoardWithWorkStageColumn();
+        board.addNewCard(new Card("1", CardType.DEFECT), COLUMN_TEST);
 
         double previousFortune = board.getKinbin().getFortune();
         board.pulse();
 
         double actualFortune = board.getKinbin().getFortune();
-        double expectedFortune = previousFortune + 100;
+        double expectedFortune = previousFortune - 1;
         assertThat(actualFortune, is(expectedFortune));
     }
 
     @Test
-    public void shouldRemove1FromFortuneIfDefectsAreInWorkStage() {
-        board = initializeBoardWithWorkStageColumn();
+    public void shouldRemove1FromFortuneIfDefectsAreInQueue(){
+        board = initializeBoardWithQueueColumn();
         board.addNewCard(new Card("1", CardType.DEFECT), COLUMN_TEST);
 
         double previousFortune = board.getKinbin().getFortune();
@@ -364,4 +364,31 @@ public class BoardTest {
         assertThat(actualFortune, is(expectedFortune));
     }
 
+    @Test
+    public void shouldRemove5centsFromFortuneIfSpikeIsInQueue() {
+        board = initializeBoardWithQueueColumn();
+        board.addNewCard(new Card("1", CardType.SPIKE), COLUMN_TEST);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.pulse();
+
+        double actualFortune = board.getKinbin().getFortune();
+        double expectedFortune = previousFortune - 0.5;
+        assertThat(actualFortune, is(expectedFortune));
+    }
+
+    @Test
+    public void shouldAdd100ToFortuneIfCardReachDone() throws CardNotFoundException {
+        board = initializeStandardBoard();
+        board.addNewCard(new Card("2", CardType.STORY), ACCEPTED);
+
+        double previousFortune = board.getKinbin().getFortune();
+        board.transition("2", ACCEPTED, DONE);
+        double actualFortune = board.getKinbin().getFortune();
+
+        double expectedFortune = previousFortune + 100;
+        assertThat(actualFortune, is(expectedFortune));
+
+
+    }
 }
