@@ -1,5 +1,11 @@
-package com.kinbin.kinbin.core.model;
+package com.kinbin.kinbin.core.service;
 
+import com.kinbin.kinbin.core.model.EnergyStatus;
+import com.kinbin.kinbin.core.model.FortuneStatus;
+import com.kinbin.kinbin.core.model.Kinbin;
+import com.kinbin.kinbin.core.model.WeightStatus;
+import com.kinbin.kinbin.core.service.KinbinStatus;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -22,7 +28,7 @@ public class KinbinStatusTest {
 
         kinbinStatus.updateStatus();
 
-        assertThat(kinbinStatus.getFortuneStatus(), is(FortuneStatus.MISERABLE));
+        assertThat(kinbinStatus.getFortuneStatus(), CoreMatchers.is(FortuneStatus.MISERABLE));
     }
 
     @Test
@@ -106,17 +112,17 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinSHouldHaveEnergyStatusAsTooLowIfItIsLessThan20() {
-        kinbin.decreaseEnergy(100);
+        kinbin.decreasePercentEnergy(100);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
 
-        assertThat(kinbinStatus.getEnergyStatus(), is(EnergyStatus.TOO_LOW));
+        assertThat(kinbinStatus.getEnergyStatus(), CoreMatchers.is(EnergyStatus.TOO_LOW));
     }
 
     @Test
     public void kinbinSHouldHaveEnergyStatusAsTooLowIfItIsEquals20() {
-        kinbin.decreaseEnergy(60);
+        kinbin.decreasePercentEnergy(60);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -126,7 +132,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinSHouldHaveEnergyStatusAsLowIfItIsBetween20And40() {
-        kinbin.decreaseEnergy(40);
+        kinbin.decreasePercentEnergy(40);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -136,7 +142,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinSHouldHaveEnergyStatusAsLowIfItIsEquals40() {
-        kinbin.decreaseEnergy(20);
+        kinbin.decreasePercentEnergy(20);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -155,7 +161,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldHaveEnergyStatusAsMediumIfItIsEquals60() {
-        kinbin.increaseEnergy(20);
+        kinbin.increasePercentEnergy(20);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -165,7 +171,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldHaveEnergyStatusAsHighIfItIsBetween60And80() {
-        kinbin.increaseEnergy(40);
+        kinbin.increasePercentEnergy(40);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -175,7 +181,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldHaveEnergyStatusAsHighIfItiSEquals80() {
-        kinbin.increaseEnergy(60);
+        kinbin.increasePercentEnergy(60);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -185,7 +191,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldHaveEnergyStatusAdTooHighIfItIsBetween80And100() {
-        kinbin.increaseEnergy(80);
+        kinbin.increasePercentEnergy(80);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -195,7 +201,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldHaveEnergyStatusAsTooHighIfItIsEquals100() {
-        kinbin.increaseEnergy(100);
+        kinbin.increasePercentEnergy(100);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -205,7 +211,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldHaveEnergyStatusAsDangerZoneIfItIsGreaterThan100() {
-        kinbin.increaseEnergy(120);
+        kinbin.increasePercentEnergy(120);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -215,17 +221,17 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeDeadIfWeightIsEquals0() {
-        kinbin.decreaseWeight(100);
+        kinbin.decreasePercentWeight(100);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
 
-        assertThat(kinbinStatus.getWeightStatus(), is(WeightStatus.DEAD));
+        assertThat(kinbinStatus.getWeightStatus(), CoreMatchers.is(WeightStatus.DEAD));
     }
 
     @Test
     public void kinbinShouldBeStarvingIfWeightIsBetween0And30() {
-        kinbin.decreaseWeight(80);
+        kinbin.decreasePercentWeight(80);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -235,7 +241,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeSlimIfWeightIsEquals30() {
-        kinbin.decreaseWeight(40);
+        kinbin.decreasePercentWeight(40);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -245,7 +251,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeSlimIfWeightIsBetween30And40() {
-        kinbin.decreaseWeight(30);
+        kinbin.decreasePercentWeight(30);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -255,7 +261,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeNormalIfWeightIsEquals40() {
-        kinbin.decreaseWeight(20);
+        kinbin.decreasePercentWeight(20);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -274,7 +280,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeOverweightIfWeightIsEquals60() {
-        kinbin.increaseWeight(20);
+        kinbin.increasePercentWeight(20);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -284,7 +290,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeOverweightIfWeightIsBetween60And70() {
-        kinbin.increaseWeight(30);
+        kinbin.increasePercentWeight(30);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -294,7 +300,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeObeseIfWeightIsEquals70() {
-        kinbin.increaseWeight(40);
+        kinbin.increasePercentWeight(40);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -304,7 +310,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeObeseIfWeightIsBetween70And100() {
-        kinbin.increaseWeight(70);
+        kinbin.increasePercentWeight(70);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -314,7 +320,7 @@ public class KinbinStatusTest {
 
     @Test
     public void kinbinShouldBeInDangerZoneIfWeightIsEquals100() {
-        kinbin.increaseWeight(100);
+        kinbin.increasePercentWeight(100);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();
@@ -324,7 +330,7 @@ public class KinbinStatusTest {
 
     @Test
     public void KinbinShouldBeInDangerZoneIfWeightIsGreaterThan100() {
-        kinbin.increaseWeight(120);
+        kinbin.increasePercentWeight(120);
         initializeKinbinStatus();
 
         kinbinStatus.updateStatus();

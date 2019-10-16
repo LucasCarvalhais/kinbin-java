@@ -70,8 +70,8 @@ public class Board {
 
     private void updateKinbinIfQueueColumnIsNotEmpty(Column column) {
         if (!column.getCards().isEmpty()) {
-            kinbin.increaseWeight(0.01);
-            kinbin.decreaseEnergy(0.01);
+            kinbin.increasePercentWeight(0.01);
+            kinbin.decreasePercentEnergy(0.01);
         }
     }
 
@@ -88,29 +88,29 @@ public class Board {
 
     private void updateKinbinForWorkStageColumn(Column column) {
         if (column.getCards().isEmpty()) {
-            kinbin.increaseWeight(0.01);
-            kinbin.decreaseEnergy(0.01);
+            kinbin.increasePercentWeight(0.01);
+            kinbin.decreasePercentEnergy(0.01);
         } else {
-            kinbin.decreaseWeight(0.01 * column.getAmountOfCards());
+            kinbin.decreasePercentWeight(0.01 * column.getAmountOfCards());
             if (column.getAmountOfCards() >= column.getLimit()) {
-                kinbin.decreaseEnergy(0.5);
+                kinbin.decreasePercentEnergy(0.5);
             } else {
-                kinbin.increaseEnergy(0.01 * column.getAmountOfCards());
+                kinbin.increasePercentEnergy(0.01 * column.getAmountOfCards());
             }
         }
     }
 
     private void updateKinbinIfReplenishmentColumnHasLimitReached(Column column) {
         if (column.getCards().size() >= column.getLimit()) {
-            kinbin.increaseWeight(0.05);
-            kinbin.decreaseEnergy(0.05);
+            kinbin.increasePercentWeight(0.05);
+            kinbin.decreasePercentEnergy(0.05);
         }
     }
 
     private void updateKinbinIfReplenishmentColumnIsEmpty(Column column) {
         if (column.getCards().isEmpty()) {
-            kinbin.decreaseWeight(0.05);
-            kinbin.decreaseEnergy(0.05);
+            kinbin.decreasePercentWeight(0.05);
+            kinbin.decreasePercentEnergy(0.05);
         }
     }
 }

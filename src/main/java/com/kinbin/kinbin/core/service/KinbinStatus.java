@@ -1,4 +1,9 @@
-package com.kinbin.kinbin.core.model;
+package com.kinbin.kinbin.core.service;
+
+import com.kinbin.kinbin.core.model.EnergyStatus;
+import com.kinbin.kinbin.core.model.FortuneStatus;
+import com.kinbin.kinbin.core.model.Kinbin;
+import com.kinbin.kinbin.core.model.WeightStatus;
 
 public class KinbinStatus {
     private final Kinbin kinbin;
