@@ -2,9 +2,11 @@ package com.kinbin.kinbin.core.model;
 
 import com.kinbin.kinbin.core.service.KinbinMood;
 import com.kinbin.kinbin.core.service.KinbinStatus;
+import org.springframework.stereotype.Component;
 
 import java.rmi.UnexpectedException;
 
+@Component
 public class Kinbin {
     private static final double DEFAULT_WEIGHT = 50;
     private static final double DEFAULT_ENERGY = 50;
@@ -21,6 +23,7 @@ public class Kinbin {
         this.energy = DEFAULT_ENERGY;
         this.fortune = DEFAULT_FORTUNE;
         kinbinMood = new KinbinMood(new KinbinStatus(this));
+        updateMood();
     }
 
     public double getWeight() {
