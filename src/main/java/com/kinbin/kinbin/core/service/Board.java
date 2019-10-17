@@ -33,62 +33,79 @@ public class Board {
     public void transition(String cardId, String columnFrom, String columnTo) throws CardNotFoundException {
         Card card = columns.get(columnFrom).removeCard(cardId);
         columns.get(columnTo).addCard(card);
-        if (columns.get(columnTo).isEnd()) {
-            if (card.getCardType() == CardType.STORY) {
-                kinbin.addFortune(100);
-            }
+        addFortuneIfStoryReachFinalColumn(columnTo, card);
+    }
+
+    private void addFortuneIfStoryReachFinalColumn(String columnTo, Card card) {
+        if (columns.get(columnTo).isEnd() && card.getCardType() == CardType.STORY) {
+            kinbin.addFortune(100);
         }
     }
 
     public void pulse() {
-        for (Column column : columns.values()) {
-            if (column.isReplenishment()) {
-                if (column.getCards().isEmpty()) {
-                    kinbin.decreasePercentWeight(0.05);
-                    kinbin.decreasePercentEnergy(0.05);
-                }
-                if (column.getCards().size() >= column.getLimit()) {
-                    kinbin.increasePercentWeight(0.05);
-                    kinbin.decreasePercentEnergy(0.05);
-                }
-            }
+        columns.values().forEach(column -> {
+            updateAttributiesForReplenishmentColumn(column);
+            updateAttributiesForWorkStageColumn(column);
+            updateAttributiesForQueueColumn(column);
+        });
+    }
 
-            if (column.isWorkStage()) {
-                if (column.getCards().isEmpty()) {
-                    kinbin.increasePercentWeight(0.01);
-                    kinbin.decreasePercentEnergy(0.01);
+    private void updateAttributiesForQueueColumn(Column column) {
+        if (column.isQueue()) {
+            if (!column.getCards().isEmpty()) {
+                kinbin.increasePercentWeight(0.01);
+                kinbin.decreasePercentEnergy(0.01);
+            }
+            determineFortuneForDefectsAndSpikes(column);
+        }
+    }
+
+    private void updateAttributiesForWorkStageColumn(Column column) {
+        if (column.isWorkStage()) {
+            if (column.getCards().isEmpty()) {
+                kinbin.increasePercentWeight(0.01);
+                kinbin.decreasePercentEnergy(0.01);
+            } else {
+                kinbin.decreasePercentWeight(0.01 * column.getAmountOfCards());
+                if (column.getAmountOfCards() >= column.getLimit()) {
+                    kinbin.decreasePercentEnergy(0.5);
                 } else {
-                    kinbin.decreasePercentWeight(0.01 * column.getAmountOfCards());
-                    if (column.getAmountOfCards() >= column.getLimit()) {
-                        kinbin.decreasePercentEnergy(0.5);
-                    } else {
-                        kinbin.increasePercentEnergy(0.01 * column.getAmountOfCards());
-                    }
-                }
-                for (Card card : column.getCards()) {
-                    if (card.getCardType() == CardType.DEFECT) {
-                        kinbin.removeFortune(1);
-                    }
-                    if (card.getCardType() == CardType.SPIKE) {
-                        kinbin.removeFortune(0.5);
-                    }
+                    kinbin.increasePercentEnergy(0.01 * column.getAmountOfCards());
                 }
             }
+            determineFortuneForDefectsAndSpikes(column);
+        }
+    }
 
-            if (column.isQueue()) {
-                if (!column.getCards().isEmpty()) {
-                    kinbin.increasePercentWeight(0.01);
-                    kinbin.decreasePercentEnergy(0.01);
-                }
-                for (Card card : column.getCards()) {
-                    if (card.getCardType() == CardType.DEFECT) {
-                        kinbin.removeFortune(1);
-                    }
-                    if (card.getCardType() == CardType.SPIKE) {
-                        kinbin.removeFortune(0.5);
-                    }
-                }
+    private void updateAttributiesForReplenishmentColumn(Column column) {
+        if (column.isReplenishment()) {
+            if (column.getCards().isEmpty()) {
+                kinbin.decreasePercentWeight(0.05);
+                kinbin.decreasePercentEnergy(0.05);
             }
+            if (column.getCards().size() >= column.getLimit()) {
+                kinbin.increasePercentWeight(0.05);
+                kinbin.decreasePercentEnergy(0.05);
+            }
+        }
+    }
+
+    private void determineFortuneForDefectsAndSpikes(Column column) {
+        column.getCards().forEach(card -> {
+            removeFortuneForDefect(card);
+            removeFortuneForSpike(card);
+        });
+    }
+
+    private void removeFortuneForSpike(Card card) {
+        if (card.getCardType() == CardType.SPIKE) {
+            kinbin.removeFortune(0.5);
+        }
+    }
+
+    private void removeFortuneForDefect(Card card) {
+        if (card.getCardType() == CardType.DEFECT) {
+            kinbin.removeFortune(1);
         }
     }
 }

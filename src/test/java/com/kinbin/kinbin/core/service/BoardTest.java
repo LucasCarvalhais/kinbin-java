@@ -302,6 +302,17 @@ public class BoardTest {
     }
 
     @Test
+    public void shouldNotAffectEnergyIfQueueIsNEmpty() {
+        board = initializeBoardWithQueueColumn();
+
+        double previousEnergy = board.getKinbin().getEnergy();
+        board.pulse();
+
+        double actualEnergy = board.getKinbin().getEnergy();
+        assertThat(actualEnergy, is(previousEnergy));
+    }
+
+    @Test
     public void shouldDecreaseEnergyIfQueueIsNotEmpty() {
         board = initializeBoardWithQueueColumn();
         board.addNewCard(new Card("1", CardType.STORY), COLUMN_TEST);
@@ -312,17 +323,6 @@ public class BoardTest {
         double actualEnergy = board.getKinbin().getEnergy();
         double expectedEneergy = previousEnergy - previousEnergy*(0.01/100);
         assertThat(actualEnergy, is(expectedEneergy));
-    }
-
-    @Test
-    public void shouldNotAffectEnergyIfQueueIsNEmpty() {
-        board = initializeBoardWithQueueColumn();
-
-        double previousEnergy = board.getKinbin().getEnergy();
-        board.pulse();
-
-        double actualEnergy = board.getKinbin().getEnergy();
-        assertThat(actualEnergy, is(previousEnergy));
     }
 
     @Test
