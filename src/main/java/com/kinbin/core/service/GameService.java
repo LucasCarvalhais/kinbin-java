@@ -1,5 +1,6 @@
 package com.kinbin.core.service;
 
+import com.kinbin.core.model.board.Board;
 import com.kinbin.core.model.kinbin.KinbinImpl;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +10,11 @@ import java.util.Map;
 @Component
 public class GameService implements Game {
     private final KinbinImpl kinbin;
+    private final Board board;
 
-    public GameService(KinbinImpl kinbin) {
+    public GameService(KinbinImpl kinbin, Board board) {
         this.kinbin = kinbin;
+        this.board = board;
     }
 
     public Map<String, Object> getKinbinAttributies() {

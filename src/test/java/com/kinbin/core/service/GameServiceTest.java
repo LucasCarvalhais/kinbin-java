@@ -1,5 +1,6 @@
 package com.kinbin.core.service;
 
+import com.kinbin.core.model.board.BoardImpl;
 import com.kinbin.core.model.kinbin.KinbinImpl;
 import com.kinbin.core.model.kinbin.Mood;
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class GameServiceTest {
 
     @Test
     public void shouldGetKinbinStatus() {
-        GameService game = new GameService(new KinbinImpl());
+        GameService game = new GameService(new KinbinImpl(), new BoardImpl(null, null));
 
         Map<String, Object> expectedAttributies = new HashMap();
         expectedAttributies.put("fortune", 250.0);

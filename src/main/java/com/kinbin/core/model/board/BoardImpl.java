@@ -2,9 +2,11 @@ package com.kinbin.core.model.board;
 
 import com.kinbin.core.exception.CardNotFoundException;
 import com.kinbin.core.model.kinbin.KinbinImpl;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Component
 public class BoardImpl implements Board {
 
     private final KinbinImpl kinbin;
