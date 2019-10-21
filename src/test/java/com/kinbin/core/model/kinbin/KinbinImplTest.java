@@ -1,6 +1,5 @@
 package com.kinbin.core.model.kinbin;
 
-import com.kinbin.core.model.kinbin.KinbinImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,10 +37,10 @@ public class KinbinImplTest {
     }
 
     @Test
-    public void shouldIncrease5HundredthPercentOfWeight() {
-        double expectedWeight = 50.025;
+    public void shouldIncrease100GramsTpWeight() {
+        double expectedWeight = 50.1;
 
-        kinbin.increasePercentWeight(0.05);
+        kinbin.increaseWeight(0.1);
         double finalWeight = kinbin.getWeight();
 
         assertThat(finalWeight, is(expectedWeight));

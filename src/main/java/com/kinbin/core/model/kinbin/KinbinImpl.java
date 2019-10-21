@@ -3,8 +3,6 @@ package com.kinbin.core.model.kinbin;
 import com.kinbin.core.exception.UndefiniedMoodException;
 import org.springframework.stereotype.Component;
 
-import java.rmi.UnexpectedException;
-
 @Component
 public class KinbinImpl implements Kinbin {
     private static final double DEFAULT_WEIGHT = 50;
@@ -112,4 +110,8 @@ public class KinbinImpl implements Kinbin {
         }
     }
 
+    @Override
+    public void increaseWeight(double weight) {
+        this.weight += weight;
+    }
 }

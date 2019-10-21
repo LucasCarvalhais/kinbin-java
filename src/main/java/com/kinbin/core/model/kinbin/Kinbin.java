@@ -16,4 +16,5 @@ public interface Kinbin {
     void addFortune(double value);
     void removeFortune(double value);
 
+    void increaseWeight(double weight);
 }

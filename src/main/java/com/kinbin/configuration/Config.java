@@ -20,7 +20,7 @@ public class Config {
 
     @Bean
     public Board getBoard() {
-        return new BoardImpl(null, null);
+        return new BoardImpl();
     }
 
 }
