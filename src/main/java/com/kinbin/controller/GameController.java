@@ -1,8 +1,7 @@
 package com.kinbin.controller;
 
 import com.kinbin.core.model.kinbin.Kinbin;
-import com.kinbin.core.model.kinbin.KinbinImpl;
-import com.kinbin.core.service.GameService;
+import com.kinbin.core.service.Game;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,9 +11,9 @@ import static org.springframework.util.StringUtils.capitalize;
 @RestController
 public class GameController {
 
-    GameService game;
+    Game game;
 
-    public GameController(GameService game) {
+    public GameController(Game game) {
         this.game = game;
     }
 
@@ -41,7 +40,7 @@ public class GameController {
     }
 
     @GetMapping("/kinbin")
-    public KinbinImpl getKinbin() {
+    public Kinbin getKinbin() {
         return game.getKinbin();
     }
 

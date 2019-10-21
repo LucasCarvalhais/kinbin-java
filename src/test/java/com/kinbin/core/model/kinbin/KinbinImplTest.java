@@ -1,6 +1,5 @@
-package com.kinbin.core.model;
+package com.kinbin.core.model.kinbin;
 
-import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.model.kinbin.KinbinImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class KinbinImplTest {
 
     private static final String NAME_KINBIN = "Taichi Ohno";
-    Kinbin kinbin;
+    KinbinImpl kinbin;
 
     @Before
     public void setUp() {

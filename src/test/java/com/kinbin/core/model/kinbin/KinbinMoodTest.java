@@ -1,4 +1,4 @@
-package com.kinbin.core.service;
+package com.kinbin.core.model.kinbin;
 
 import com.kinbin.core.model.kinbin.KinbinImpl;
 import com.kinbin.core.model.kinbin.Mood;

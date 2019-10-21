@@ -1,5 +1,6 @@
 package com.kinbin.core.model.kinbin;
 
+import com.kinbin.core.exception.UndefiniedMoodException;
 import org.springframework.stereotype.Component;
 
 import java.rmi.UnexpectedException;
@@ -31,7 +32,6 @@ public class KinbinImpl implements Kinbin {
         updateMood();
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -107,7 +107,7 @@ public class KinbinImpl implements Kinbin {
     public void updateMood() {
         try {
             mood = kinbinMood.determineMood();
-        } catch (UnexpectedException e) {
+        } catch (UndefiniedMoodException e) {
             e.printStackTrace();
         }
     }

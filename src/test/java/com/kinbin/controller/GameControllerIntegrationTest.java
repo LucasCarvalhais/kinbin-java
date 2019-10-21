@@ -2,7 +2,6 @@ package com.kinbin.controller;
 
 import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.model.kinbin.KinbinImpl;
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +24,10 @@ public class GameControllerIntegrationTest {
     MockMvc mockMvc;
 
     @Test
-    public void shouldLoadPageProperly() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void shouldShowKinbinStatus() throws Exception {
         Kinbin kinbin = new KinbinImpl();
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Name:")))
                 .andExpect(content().string(containsString("Status:")))
                 .andExpect(content().string(containsString("Age:")))

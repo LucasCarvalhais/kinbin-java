@@ -1,4 +1,4 @@
-package com.kinbin.core.model;
+package com.kinbin.core.model.board;
 
 import com.kinbin.core.exception.CardNotFoundException;
 import com.kinbin.core.model.board.Card;

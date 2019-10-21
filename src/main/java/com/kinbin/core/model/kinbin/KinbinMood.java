@@ -1,5 +1,7 @@
 package com.kinbin.core.model.kinbin;
 
+import com.kinbin.core.exception.UndefiniedMoodException;
+
 import java.rmi.UnexpectedException;
 
 public class KinbinMood {
@@ -10,7 +12,7 @@ public class KinbinMood {
         this.kinbinStatus = kinbinStatus;
     }
 
-    public Mood determineMood() throws UnexpectedException {
+    public Mood determineMood() throws UndefiniedMoodException {
         kinbinStatus.updateStatus();
 
         if (isKinbinDesesperate()) return Mood.DESESPERATE;
@@ -21,7 +23,7 @@ public class KinbinMood {
         if (isKinbinOptimism()) return Mood.OPTIMISM;
         if (isKinbinHappy()) return Mood.HAPPY;
 
-        throw new UnexpectedException("Something went wrong while updating Kinbin's mood");
+        throw new UndefiniedMoodException();
     }
 
     private boolean isKinbinHappy() {

@@ -2,13 +2,12 @@ package com.kinbin.core.model.kinbin;
 
 public interface Kinbin {
 
-    void setName(String name);
-    double getEnergy();
     String getName();
+    double getAge();
+    Mood getMood();
+    double getEnergy();
     double getWeight();
     double getFortune();
-    double getAge();
-
     boolean isAlive();
     void increasePercentWeight(double percent);
     void decreasePercentWeight(double percent);
@@ -17,5 +16,4 @@ public interface Kinbin {
     void addFortune(double value);
     void removeFortune(double value);
 
-    Mood getMood();
 }
