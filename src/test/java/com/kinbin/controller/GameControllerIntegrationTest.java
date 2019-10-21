@@ -1,5 +1,7 @@
 package com.kinbin.controller;
 
+import com.kinbin.core.model.kinbin.Kinbin;
+import com.kinbin.core.model.kinbin.KinbinImpl;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +32,15 @@ public class GameControllerIntegrationTest {
 
     @Test
     public void shouldShowKinbinStatus() throws Exception {
+        Kinbin kinbin = new KinbinImpl();
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(content().string(containsString("Name:")))
-                .andExpect(content().string(containsString("Status:")));
+                .andExpect(content().string(containsString("Status:")))
+                .andExpect(content().string(containsString("Age:")))
+                .andExpect(content().string(containsString("Mood:")))
+                .andExpect(content().string(containsString("Weight:")))
+                .andExpect(content().string(containsString("Energy:")))
+                .andExpect(content().string(containsString("Fortune:")));
     }
 
 }

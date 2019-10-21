@@ -32,6 +32,7 @@ public class KinbinImplTest {
 
     @Test
     public void checkDefaultValues() {
+        assertThat(kinbin.getAge(), is(0.0));
         assertThat(kinbin.getEnergy(), is(50.0));
         assertThat(kinbin.getWeight(), is(50.0));
         assertThat(kinbin.getFortune(), is(250.0));

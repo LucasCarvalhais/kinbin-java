@@ -7,6 +7,7 @@ public interface Kinbin {
     String getName();
     double getWeight();
     double getFortune();
+    double getAge();
 
     boolean isAlive();
     void increasePercentWeight(double percent);
@@ -15,4 +16,6 @@ public interface Kinbin {
     void decreasePercentEnergy(double percent);
     void addFortune(double value);
     void removeFortune(double value);
+
+    Mood getMood();
 }

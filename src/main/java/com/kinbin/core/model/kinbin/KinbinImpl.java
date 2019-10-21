@@ -11,16 +11,19 @@ public class KinbinImpl implements Kinbin {
     private static final double DEFAULT_FORTUNE = 250;
 
     private final KinbinMood kinbinMood;
+
     private String name;
+    private boolean isAlive;
+    private double age;
     private double weight;
     private double energy;
     private double fortune;
     private Mood mood;
-    private boolean isAlive;
 
     public KinbinImpl() {
         this.name = "Kinbin Default";
         this.isAlive = true;
+        this.age = 0;
         this.weight = DEFAULT_WEIGHT;
         this.energy = DEFAULT_ENERGY;
         this.fortune = DEFAULT_FORTUNE;
@@ -39,13 +42,18 @@ public class KinbinImpl implements Kinbin {
     }
 
     @Override
-    public double getWeight() {
-        return weight;
+    public double getAge() {
+        return age;
     }
 
     @Override
     public boolean isAlive() {
         return isAlive;
+    }
+
+    @Override
+    public double getWeight() {
+        return weight;
     }
 
     @Override
