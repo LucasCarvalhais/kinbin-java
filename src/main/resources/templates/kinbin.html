@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Kinbin</title>
+    <style>
+        body {
+            margin-left: 100px;
+            margin-right: 100px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+
+        #buttons {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        #kinbin-status {
+            float: left;
+        }
+
+        #board {
+            display: inline-block;
+            margin-left: 30px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Kinbin Status</h1>
+    <h1>Kinbin's Adventure</h1>
+    <div id="buttons">
+        <button id="add-column">Add new column</button>
+        <button id="add-card">Add new card</button>
+        <button id="pulse">Pulse</button>
+    </div>
     <div id="kinbin-status">
+        <h2>Kinbin Status</h2>
         <p>Name: <span th:text="${name}">No name found</span></p>
         <p>Status: <span th:text="${status}">No status found</span></p>
         <p>Age: <span th:text="${age}">No age found</span></p>
@@ -14,6 +45,17 @@
         <p>Weight: <span th:text="${weight}">No weight found</span> kg</p>
         <p>Energy: <span th:text="${energy}">No energy found</span> %</p>
         <p>Fortune: $ <span th:text="${fortune}">No fortune found</span></p>
+    </div>
+    <div id="board">
+        <h2>Board</h2>
+        <div>
+            <div>
+                <p>Column</p>
+                <ul>
+                    <li>1</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </body>
 </html>
