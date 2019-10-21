@@ -28,4 +28,11 @@ public class GameControllerIntegrationTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void shouldShowKinbinStatus() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(content().string(containsString("Name:")))
+                .andExpect(content().string(containsString("Status:")));
+    }
+
 }

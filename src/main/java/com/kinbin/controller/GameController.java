@@ -1,5 +1,6 @@
 package com.kinbin.controller;
 
+import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.model.kinbin.KinbinImpl;
 import com.kinbin.core.service.GameService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,17 @@ public class GameController {
 
     @GetMapping("/")
     public ModelAndView kinbinpage() {
-        return new ModelAndView("kinbin");
+        ModelAndView modelAndView = new ModelAndView("kinbin");
+        Kinbin kinbin = game.getKinbin();
+
+        modelAndView.addObject("name", kinbin.getName());
+        if (kinbin.isAlive()) {
+            modelAndView.addObject("status", "Alive");
+        } else {
+            modelAndView.addObject("status", "Dead");
+        }
+
+        return modelAndView;
     }
 
     @GetMapping("/kinbin")

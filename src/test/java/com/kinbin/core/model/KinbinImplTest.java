@@ -1,19 +1,33 @@
 package com.kinbin.core.model;
 
+import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.model.kinbin.KinbinImpl;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class KinbinImplTest {
 
-    KinbinImpl kinbin;
+    private static final String NAME_KINBIN = "Taichi Ohno";
+    Kinbin kinbin;
 
     @Before
     public void setUp() {
         kinbin = new KinbinImpl();
+    }
+
+    @Test
+    public void shouldGetKinbinsName() {
+        kinbin.setName(NAME_KINBIN);
+        assertThat(kinbin.getName(), is(NAME_KINBIN));
+    }
+
+    @Test
+    public void kinbinShouldBeAlive() {
+        assertTrue(kinbin.isAlive());
     }
 
     @Test
