@@ -19,8 +19,10 @@ public abstract class Column {
         return cards;
     }
 
+    public void addCard(Card card) {
+        cards.add(card);
+    }
+
     public abstract double affectWeight();
-
-
 
 }

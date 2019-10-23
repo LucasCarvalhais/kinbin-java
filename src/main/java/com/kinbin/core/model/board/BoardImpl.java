@@ -22,6 +22,15 @@ public class BoardImpl implements Board {
         return columns;
     }
 
+    @Override
+    public void addCard(Card card, String columnName) {
+        for (Column column : columns) {
+            if (column.getName().equals(columnName)) {
+                column.addCard(card);
+            }
+        }
+    }
+
     public double checkWeight() {
         double totalWeight = 0;
         for (Column column : columns) {

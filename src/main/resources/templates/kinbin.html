@@ -33,7 +33,7 @@
     <h1>Kinbin's Adventure</h1>
     <div id="buttons">
         <button id="add-column">Add new column</button>
-        <button id="add-card">Add new card</button>
+        <button id="add-card" onclick="addCard()">Add new card</button>
         <button id="pulse" onclick="pulse()">Pulse</button>
     </div>
     <div id="kinbin-status">
@@ -51,7 +51,7 @@
         <div th:each="column : ${columns}">
             <div>
                 <p th:text="${column.name}">Column</p>
-                <ul th:each="card : ${cards}">
+                <ul th:each="card : ${column.cards}">
                     <li th:text="${card.cardType}">1</li>
                 </ul>
             </div>
@@ -62,8 +62,15 @@
         function pulse(){
             $.get("/pulse", function(data, status){
                 console.log(status);
+                window.location.reload();
             });
-            window.location.reload();
+        }
+
+        function addCard(){
+            $.get("/addCard", function(data, status){
+                console.log(status);
+                window.location.reload();
+            });
         }
     </script>
 </body>

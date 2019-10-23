@@ -1,8 +1,6 @@
 package com.kinbin.controller;
 
-import com.kinbin.core.model.board.Board;
-import com.kinbin.core.model.board.Column;
-import com.kinbin.core.model.board.WorkStage;
+import com.kinbin.core.model.board.*;
 import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.service.Game;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +55,13 @@ public class GameController {
     @GetMapping("/pulse")
     public void pulseKinbin(HttpServletResponse response) throws IOException {
         game.makeKinbinPulse();
+        response.sendRedirect("/");
+    }
+
+    @GetMapping("/addCard")
+    public void addCard(HttpServletResponse response) throws IOException {
+        Card card = new Card("default_name", CardType.STORY);
+        game.addCard(card, "Work Stage");
         response.sendRedirect("/");
     }
 

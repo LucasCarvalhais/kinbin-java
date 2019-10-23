@@ -8,4 +8,6 @@ public interface Board {
     double checkWeight();
 
     List<Column> getColumns();
+
+    void addCard(Card card, String column);
 }
