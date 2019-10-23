@@ -20,6 +20,7 @@ public class GameController {
     public GameController(Game game) {
         this.game = game;
         Column workStage = new WorkStage();
+        workStage.setLimit(5);
         this.game.addColumn(workStage);
     }
 

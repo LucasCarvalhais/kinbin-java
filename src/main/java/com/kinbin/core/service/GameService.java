@@ -37,7 +37,7 @@ public class GameService implements Game {
     }
 
     @Override
-    public void addCard(Card card, String column) {
-        board.addCard(card, column);
+    public void addCard(Card card, String work_stage) {
+        board.addCard(card, work_stage);
     }
 }

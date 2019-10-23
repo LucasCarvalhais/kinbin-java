@@ -7,13 +7,15 @@ public class WorkStage extends Column {
 
     public WorkStage() {
         super("Work Stage");
-        cards = new ArrayList<>();
     }
 
     @Override
     public double affectWeight() {
-        if (cards.isEmpty()) {
+        if (getCards().isEmpty()) {
             return 0.1;
+        }
+        if (getCards().size() > getLimit() && getLimit() != 0) {
+            return -0.5;
         }
         return -0.1;
     }

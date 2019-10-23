@@ -23,11 +23,35 @@ public class WorkStageTest {
     }
 
     @Test
-    public void shouldDecrease0point1KgIfWorkStageHaveAtLeastOneCard() {
+    public void shouldDecrease0point1KgIfWorkStageHasAtLeastOneCard() {
         WorkStage workStage = new WorkStage();
         workStage.addCard(new Card("test", CardType.STORY));
         double expectedWeight = -0.1;
         assertThat(workStage.affectWeight(), is(expectedWeight));
+    }
+
+    @Test
+    public void shouldDecrease0point1KgIfWorkStageHasCardsEqualsToLimit() {
+        WorkStage workStage = new WorkStage();
+        workStage.setLimit(5);
+        for (int i = 0; i < 5; i++) {
+            workStage.addCard(new Card("test", CardType.STORY));
+        }
+        double expectedWeight = -0.1;
+        assertThat(workStage.affectWeight(), is(expectedWeight));
+    }
+
+    @Test
+    public void shouldDecrease0point5KgIfWorkStageHasCardsMoreThanLimit() {
+        WorkStage workStage = new WorkStage();
+        workStage.setLimit(5);
+        for (int i = 0; i < 6; i++) {
+            workStage.addCard(new Card("test", CardType.STORY));
+        }
+
+        double expectedWeight = -0.5;
+        assertThat(workStage.affectWeight(), is(expectedWeight));
+
     }
 
 }
