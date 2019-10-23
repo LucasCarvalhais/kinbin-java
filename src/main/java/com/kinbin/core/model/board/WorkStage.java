@@ -6,6 +6,7 @@ import java.util.List;
 public class WorkStage extends Column {
 
     public WorkStage() {
+        super("Work Stage");
         cards = new ArrayList<>();
     }
 
@@ -14,7 +15,4 @@ public class WorkStage extends Column {
         return 0.1;
     }
 
-    public List<Card> getCards() {
-        return cards;
-    }
 }

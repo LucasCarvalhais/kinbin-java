@@ -29,4 +29,9 @@ public class GameService implements Game {
         double totalWeight = board.checkWeight();
         kinbin.increaseWeight(totalWeight);
     }
+
+    @Override
+    public Board getBoard() {
+        return board;
+    }
 }
