@@ -3,6 +3,8 @@ package com.kinbin.core.model.kinbin;
 import com.kinbin.core.exception.UndefiniedMoodException;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class KinbinImpl implements Kinbin {
     private static final double DEFAULT_WEIGHT = 50;
@@ -112,6 +114,6 @@ public class KinbinImpl implements Kinbin {
 
     @Override
     public void increaseWeight(double weight) {
-        this.weight += weight;
+        this.weight = BigDecimal.valueOf(this.weight).add(BigDecimal.valueOf(weight)).doubleValue();
     }
 }
