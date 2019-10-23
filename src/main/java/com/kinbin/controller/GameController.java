@@ -4,7 +4,12 @@ import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.service.Game;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 import static org.springframework.util.StringUtils.capitalize;
 
@@ -42,6 +47,11 @@ public class GameController {
     @GetMapping("/kinbin")
     public Kinbin getKinbin() {
         return game.getKinbin();
+    }
+
+    @GetMapping("/pulse")
+    public void pulseKinbin(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/");
     }
 
 }

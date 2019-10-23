@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,6 +34,12 @@ public class GameControllerIntegrationTest {
                 .andExpect(content().string(containsString("Weight:")))
                 .andExpect(content().string(containsString("Energy:")))
                 .andExpect(content().string(containsString("Fortune:")));
+    }
+
+    @Test
+    public void shouldPulse() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/pulse"))
+                .andExpect(status().isFound());
     }
 
 }
