@@ -16,9 +16,17 @@ public class WorkStageTest {
     }
     
     @Test
-    public void shouldDecrease0point1kgIfWorkStageIsEmpty() {
+    public void shouldIncrease0point1kgIfWorkStageIsEmpty() {
         WorkStage workStage = new WorkStage();
         double expectedWeight = 0.1;
+        assertThat(workStage.affectWeight(), is(expectedWeight));
+    }
+
+    @Test
+    public void shouldDecrease0point1KgIfWorkStageHaveAtLeastOneCard() {
+        WorkStage workStage = new WorkStage();
+        workStage.addCard(new Card("test", CardType.STORY));
+        double expectedWeight = -0.1;
         assertThat(workStage.affectWeight(), is(expectedWeight));
     }
 

@@ -12,7 +12,10 @@ public class WorkStage extends Column {
 
     @Override
     public double affectWeight() {
-        return 0.1;
+        if (cards.isEmpty()) {
+            return 0.1;
+        }
+        return -0.1;
     }
 
 }
