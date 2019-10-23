@@ -7,24 +7,25 @@ import java.math.BigDecimal;
 
 @Component
 public class KinbinImpl implements Kinbin {
-    private static final double DEFAULT_WEIGHT = 50;
-    private static final double DEFAULT_ENERGY = 50;
-    private static final double DEFAULT_FORTUNE = 250;
+    private static final BigDecimal DEFAULT_AGE = BigDecimal.valueOf(0);
+    private static final BigDecimal DEFAULT_WEIGHT = BigDecimal.valueOf(50);
+    private static final BigDecimal DEFAULT_ENERGY = BigDecimal.valueOf(50);
+    private static final BigDecimal DEFAULT_FORTUNE = BigDecimal.valueOf(250);
 
     private final KinbinMood kinbinMood;
 
     private String name;
     private boolean isAlive;
-    private double age;
-    private double weight;
-    private double energy;
-    private double fortune;
+    private BigDecimal age;
+    private BigDecimal weight;
+    private BigDecimal energy;
+    private BigDecimal fortune;
     private Mood mood;
 
     public KinbinImpl() {
         this.name = "Kinbin Default";
         this.isAlive = true;
-        this.age = 0;
+        this.age = DEFAULT_AGE;
         this.weight = DEFAULT_WEIGHT;
         this.energy = DEFAULT_ENERGY;
         this.fortune = DEFAULT_FORTUNE;
@@ -43,7 +44,7 @@ public class KinbinImpl implements Kinbin {
 
     @Override
     public double getAge() {
-        return age;
+        return age.doubleValue();
     }
 
     @Override
@@ -53,17 +54,17 @@ public class KinbinImpl implements Kinbin {
 
     @Override
     public double getWeight() {
-        return weight;
+        return weight.doubleValue();
     }
 
     @Override
     public double getEnergy() {
-        return energy;
+        return energy.doubleValue();
     }
 
     @Override
     public double getFortune() {
-        return fortune;
+        return fortune.doubleValue();
     }
 
     public Mood getMood() {
@@ -72,36 +73,36 @@ public class KinbinImpl implements Kinbin {
 
     @Override
     public void addFortune(double fortune) {
-        this.fortune += fortune;
+        this.fortune = this.fortune.add(BigDecimal.valueOf(fortune));
     }
 
     @Override
     public void removeFortune(double fortune) {
-        this.fortune -= fortune;
+        this.fortune = this.fortune.subtract(BigDecimal.valueOf(fortune));
     }
 
     @Override
     public void increasePercentWeight(double percent) {
-        double weight_percent = weight * (percent/100);
-        weight += weight_percent;
+        BigDecimal weight_percent = weight.multiply(BigDecimal.valueOf(percent/100));
+        weight = weight.add(weight_percent);
     }
 
     @Override
     public void decreasePercentWeight(double percent) {
-        double weight_percent = weight * (percent/100);
-        weight -= weight_percent;
+        BigDecimal weight_percent = weight.multiply(BigDecimal.valueOf(percent/100));
+        weight = weight.subtract(weight_percent);
     }
 
     @Override
     public void increasePercentEnergy(double percent) {
-        double energy_percent = energy * (percent/100);
-        energy += energy_percent;
+        BigDecimal energy_percent = energy.multiply(BigDecimal.valueOf(percent/100));
+        energy = energy.add(energy_percent);
     }
 
     @Override
     public void decreasePercentEnergy(double percent) {
-        double energy_percent = energy * (percent/100);
-        energy -= energy_percent;
+        BigDecimal energy_percent = energy.multiply(BigDecimal.valueOf(percent/100));
+        energy = energy.subtract(energy_percent);
     }
 
     public void updateMood() {
@@ -114,6 +115,6 @@ public class KinbinImpl implements Kinbin {
 
     @Override
     public void increaseWeight(double weight) {
-        this.weight = BigDecimal.valueOf(this.weight).add(BigDecimal.valueOf(weight)).doubleValue();
+        this.weight = this.weight.add(BigDecimal.valueOf(weight));
     }
 }
