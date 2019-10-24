@@ -35,6 +35,6 @@ public abstract class Column {
         cards.add(card);
     }
 
-    public abstract double affectWeight();
+    public abstract double determineWeight();
 
 }

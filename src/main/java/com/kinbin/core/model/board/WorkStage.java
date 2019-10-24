@@ -10,7 +10,7 @@ public class WorkStage extends Column {
     }
 
     @Override
-    public double affectWeight() {
+    public double determineWeight() {
         if (getCards().isEmpty()) {
             return 0.1;
         }

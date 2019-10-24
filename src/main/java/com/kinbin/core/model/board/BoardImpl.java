@@ -11,7 +11,7 @@ public class BoardImpl implements Board {
     private List<Column> columns;
 
     public BoardImpl() {
-        this.columns = new ArrayList();
+        this.columns = new ArrayList<>();
     }
 
     public void addColumn(Column column) {
@@ -34,7 +34,7 @@ public class BoardImpl implements Board {
     public double checkWeight() {
         double totalWeight = 0;
         for (Column column : columns) {
-            totalWeight += column.affectWeight();
+            totalWeight += column.determineWeight();
         }
         return totalWeight;
     }
