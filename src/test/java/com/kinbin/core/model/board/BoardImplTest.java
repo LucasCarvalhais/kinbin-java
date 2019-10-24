@@ -19,12 +19,9 @@ public class BoardImplTest {
     }
 
     @Test
-    public void shouldSendWeightUpdateTargetWhenPulseOccurs() {
-        WorkStage workStage = new WorkStage();
+    public void shouldSendWeightUpdateTarget() {
+        Column workStage = new WorkStage();
         board.addColumn(workStage);
-        assertThat(board.getColumns(), is(Arrays.asList(workStage)));
-        assertThat(workStage.getCards(), is(Collections.EMPTY_LIST));
-
         assertThat(board.checkWeight(), is(0.1));
     }
 

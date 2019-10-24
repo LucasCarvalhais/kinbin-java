@@ -1,8 +1,5 @@
 package com.kinbin.core.model.board;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class WorkStage extends Column {
 
     public WorkStage() {
@@ -11,13 +8,8 @@ public class WorkStage extends Column {
 
     @Override
     public double determineWeight() {
-        if (getCards().isEmpty()) {
-            return 0.1;
-        }
-        if (getCards().size() > getLimit() && getLimit() != 0) {
-            return -0.5;
-        }
-        return -0.1;
+        return (getCards().isEmpty()) ? 0.1
+                : (getCards().size() <= getLimit()) ? -0.1 : -0.5;
     }
 
 }

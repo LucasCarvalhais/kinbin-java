@@ -30,6 +30,7 @@ public class WorkStageTest {
 
     @Test
     public void shouldDecrease0point1KgIfWorkStageHasOneCard() {
+        workStage.setLimit(5);
         workStage.addCard(new Card("test", CardType.STORY));
         double expectedWeight = -0.1;
         assertThat(workStage.determineWeight(), is(expectedWeight));

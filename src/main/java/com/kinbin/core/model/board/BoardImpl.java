@@ -14,28 +14,25 @@ public class BoardImpl implements Board {
         this.columns = new ArrayList<>();
     }
 
+    @Override
     public void addColumn(Column column) {
         this.columns.add(column);
     }
 
+    @Override
     public List<Column> getColumns() {
         return columns;
     }
 
     @Override
     public void addCard(Card card, String columnName) {
-        for (Column column : columns) {
-            if (column.getName().equals(columnName)) {
-                column.addCard(card);
-            }
-        }
+        columns.stream().filter(column -> column.getName().equals(columnName))
+                .findFirst()
+                .ifPresent(column -> column.addCard(card));
     }
 
+    @Override
     public double checkWeight() {
-        double totalWeight = 0;
-        for (Column column : columns) {
-            totalWeight += column.determineWeight();
-        }
-        return totalWeight;
+        return columns.stream().mapToDouble(Column::determineWeight).sum();
     }
 }
