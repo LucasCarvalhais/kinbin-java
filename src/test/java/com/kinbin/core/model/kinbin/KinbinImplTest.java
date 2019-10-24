@@ -4,8 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class KinbinImplTest {
 
@@ -37,6 +36,18 @@ public class KinbinImplTest {
         double finalWeight = kinbin.getWeight();
 
         assertThat(finalWeight, is(expectedWeight));
+    }
+
+    @Test
+    public void kinbinShouldDieWhenWeightReaches0() {
+        kinbin.addWeight(-50);
+        assertFalse(kinbin.isAlive());
+    }
+
+    @Test
+    public void weightShouldNotBeNegative() {
+        kinbin.addWeight(-5000);
+        assertThat(kinbin.getWeight(), is(0.0));;
     }
 
 }

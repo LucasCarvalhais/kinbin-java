@@ -67,5 +67,9 @@ public class KinbinImpl implements Kinbin {
     @Override
     public void addWeight(double weight) {
         this.weight = this.weight.add(BigDecimal.valueOf(weight));
+        if (this.weight.doubleValue() <= 0) {
+            isAlive = false;
+            this.weight = BigDecimal.valueOf(0);
+        }
     }
 }
