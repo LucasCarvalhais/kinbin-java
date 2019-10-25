@@ -15,12 +15,21 @@ import static org.springframework.util.StringUtils.capitalize;
 @RestController
 public class GameController {
 
+    public static final int LIMIT_WORK_STAGE = 5;
+    public static final String ALIVE = "Alive";
+    public static final String DEAD = "Dead";
+    public static final String DEFAULT_ID = "default_id";
+    public static final String WORK_STAGE = "Work Stage";
     private Game game;
 
     public GameController(Game game) {
         this.game = game;
+        setUpColumns();
+    }
+
+    private void setUpColumns() {
         Column workStage = new WorkStage();
-        workStage.setLimit(5);
+        workStage.setLimit(LIMIT_WORK_STAGE);
         this.game.addColumn(workStage);
     }
 
@@ -31,13 +40,10 @@ public class GameController {
         Board board = game.getBoard();
 
         String moodString = capitalize(kinbin.getMood().toString().toLowerCase());
+        String status = (kinbin.isAlive()) ? ALIVE : DEAD;
 
         modelAndView.addObject("name", kinbin.getName());
-        if (kinbin.isAlive()) {
-            modelAndView.addObject("status", "Alive");
-        } else {
-            modelAndView.addObject("status", "Dead");
-        }
+        modelAndView.addObject("status", status);
         modelAndView.addObject("age", kinbin.getAge());
         modelAndView.addObject("mood", moodString);
         modelAndView.addObject("weight", kinbin.getWeight());
@@ -61,8 +67,8 @@ public class GameController {
 
     @GetMapping("/addCard")
     public void addCard(HttpServletResponse response) throws IOException {
-        Card card = new Card("default_name", CardType.STORY);
-        game.addCard(card, "Work Stage");
+        Card card = new Card(DEFAULT_ID, CardType.STORY);
+        game.addCard(card, WORK_STAGE);
         response.sendRedirect("/");
     }
 

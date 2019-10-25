@@ -27,12 +27,6 @@ public class GameService implements Game {
     }
 
     @Override
-    public void makeKinbinPulse() {
-        double totalWeight = board.checkWeight();
-        kinbin.addWeight(totalWeight);
-    }
-
-    @Override
     public void addColumn(Column column) {
         board.addColumn(column);
     }
@@ -40,5 +34,11 @@ public class GameService implements Game {
     @Override
     public void addCard(Card card, String column) {
         board.addCard(card, column);
+    }
+
+    @Override
+    public void makeKinbinPulse() {
+        double totalWeight = board.checkWeight();
+        kinbin.addWeight(totalWeight);
     }
 }
