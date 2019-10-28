@@ -15,11 +15,12 @@ import static org.springframework.util.StringUtils.capitalize;
 @RestController
 public class GameController {
 
-    public static final int LIMIT_WORK_STAGE = 5;
+    public static final int LIMIT_COLUMN = 5;
     public static final String ALIVE = "Alive";
     public static final String DEAD = "Dead";
     public static final String DEFAULT_ID = "default_id";
     public static final String WORK_STAGE = "Work Stage";
+    public static final String REPLENISHMENT = "Replenishment";
     private Game game;
 
     public GameController(Game game) {
@@ -28,9 +29,9 @@ public class GameController {
     }
 
     private void setUpColumns() {
-        Column workStage = new WorkStage();
-        workStage.setLimit(LIMIT_WORK_STAGE);
-        this.game.addColumn(workStage);
+        Column replenishment = new Replenishment();
+        replenishment.setLimit(LIMIT_COLUMN);
+        this.game.addColumn(replenishment);
     }
 
     @GetMapping("/")
@@ -68,7 +69,7 @@ public class GameController {
     @GetMapping("/addCard")
     public void addCard(HttpServletResponse response) throws IOException {
         Card card = new Card(DEFAULT_ID, CardType.STORY);
-        game.addCard(card, WORK_STAGE);
+        game.addCard(card, REPLENISHMENT);
         response.sendRedirect("/");
     }
 
