@@ -4,13 +4,13 @@ import com.kinbin.core.model.board.Board;
 import com.kinbin.core.model.board.BoardImpl;
 import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.model.kinbin.KinbinImpl;
-import com.kinbin.core.service.GameService;
+import com.kinbin.core.service.GameImpl;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @Configurable
-@ComponentScan(basePackageClasses = GameService.class)
+@ComponentScan(basePackageClasses = GameImpl.class)
 public class Config {
 
     @Bean

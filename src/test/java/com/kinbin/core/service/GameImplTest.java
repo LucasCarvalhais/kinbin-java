@@ -8,15 +8,15 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class GameServiceTest {
+public class GameImplTest {
 
     @Test
     public void kinbinSHouldPulseAndAffectTheirAttributies() {
-        GameService gameService = new GameService(new KinbinImpl(), new BoardImpl());
-        gameService.addColumn(new WorkStage());
+        GameImpl gameImpl = new GameImpl(new KinbinImpl(), new BoardImpl());
+        gameImpl.addColumn(new WorkStage());
 
-        gameService.makeKinbinPulse();
-        assertThat(gameService.getKinbin().getWeight(), is(50.1));
+        gameImpl.makeKinbinPulse();
+        assertThat(gameImpl.getKinbin().getWeight(), is(50.1));
     }
 
 }

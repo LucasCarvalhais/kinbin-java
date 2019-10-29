@@ -7,11 +7,11 @@ import com.kinbin.core.model.kinbin.Kinbin;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameService implements Game {
+public class GameImpl implements Game {
     private final Kinbin kinbin;
     private final Board board;
 
-    public GameService(Kinbin kinbin, Board board) {
+    public GameImpl(Kinbin kinbin, Board board) {
         this.kinbin = kinbin;
         this.board = board;
     }
