@@ -1,10 +1,10 @@
 package com.kinbin.controller;
 
+import ch.qos.logback.classic.db.names.ColumnName;
 import com.kinbin.core.model.board.*;
 import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.service.Game;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,19 +19,10 @@ public class GameController {
     public static final String ALIVE = "Alive";
     public static final String DEAD = "Dead";
     public static final String DEFAULT_ID = "default_id";
-    public static final String WORK_STAGE = "Work Stage";
-    public static final String REPLENISHMENT = "Replenishment";
     private Game game;
 
     public GameController(Game game) {
         this.game = game;
-        setUpColumns();
-    }
-
-    private void setUpColumns() {
-        Column replenishment = new Replenishment();
-        replenishment.setLimit(LIMIT_COLUMN);
-        this.game.addColumn(replenishment);
     }
 
     @GetMapping("/")
@@ -66,10 +57,32 @@ public class GameController {
         response.sendRedirect("/");
     }
 
-    @GetMapping("/addCard")
-    public void addCard(HttpServletResponse response) throws IOException {
+    @GetMapping("/add_card_form")
+    public ModelAndView addCardForm() {
+        return new ModelAndView("add_card_form");
+    }
+
+    @GetMapping("/add_card")
+    public void addCard(HttpServletResponse response,
+                        @RequestParam(name = "column-name") String columnName) throws IOException {
         Card card = new Card(DEFAULT_ID, CardType.STORY);
-        game.addCard(card, REPLENISHMENT);
+        game.addCard(card, columnName);
+        response.sendRedirect("/");
+    }
+
+    @GetMapping("/add_column_form")
+    public ModelAndView addColumnForm() {
+        return new ModelAndView("add_column_form");
+    }
+
+    @GetMapping("/add_column")
+    public void addColumn(HttpServletResponse response,
+                          @RequestParam(name = "column-type") String columnType) throws IOException {
+        if (columnType.equals("replenishment")) {
+            game.getBoard().addColumn(new Replenishment());
+        } else if (columnType.equals("work-stage")) {
+            game.getBoard().addColumn(new WorkStage());
+        }
         response.sendRedirect("/");
     }
 
