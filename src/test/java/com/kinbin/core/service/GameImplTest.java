@@ -11,12 +11,11 @@ import static org.junit.Assert.assertThat;
 public class GameImplTest {
 
     @Test
-    public void kinbinSHouldPulseAndAffectTheirAttributies() {
+    public void kinbinShouldPulseAndAffectTheirAttributes() {
         GameImpl gameImpl = new GameImpl(new KinbinImpl(), new BoardImpl());
         gameImpl.addColumn(new WorkStage());
 
         gameImpl.makeKinbinPulse();
         assertThat(gameImpl.getKinbin().getWeight(), is(50.1));
     }
-
 }

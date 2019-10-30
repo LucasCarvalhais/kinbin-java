@@ -35,7 +35,7 @@ public class GameController {
     }
 
     @GetMapping("/")
-    public ModelAndView kinbinpage() {
+    public ModelAndView kinbinPage() {
         ModelAndView modelAndView = new ModelAndView("kinbin");
         Kinbin kinbin = game.getKinbin();
         Board board = game.getBoard();

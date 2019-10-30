@@ -2,7 +2,7 @@ package com.kinbin.core.model.kinbin;
 
 public enum Mood {
     DEAD,
-    DESESPERATE,
+    DESPERATE,
     WORRIED,
     SAD,
     ANGRY,
