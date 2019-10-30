@@ -29,7 +29,7 @@ public class ReplenishmentTest {
     }
 
     @Test
-    public void shouldGet0point25IfReplenishmentHasLimitExceded() {
+    public void shouldGet0point25IfReplenishmentHasLimitExceeded() {
         double expectedWeight = 0.25;
         replenishment.setLimit(5);
         addMultipleCards(6);
