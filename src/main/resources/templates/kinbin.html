@@ -3,35 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Kinbin</title>
-    <style>
-        body {
-            margin-left: 100px;
-            margin-right: 100px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        #buttons {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        #kinbin-status {
-            float: left;
-        }
-
-        #board {
-            display: inline-table;
-            margin-left: 30px;
-        }
-
-        .column {
-            display: inline-grid;
-            padding-left: 30px;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{kinbin.css}">
 </head>
 <body>
     <h1>Kinbin's Adventure</h1>
@@ -62,21 +34,6 @@
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        function pulse(){
-            $.get("/pulse", function(data, status){
-                console.log(status);
-                window.location.reload();
-            });
-        }
-
-        function addCard(){
-            window.location.assign("http://localhost:8080/add_card_form");
-        }
-
-        function addColumn(){
-            window.location.assign("http://localhost:8080/add_column_form");
-        }
-    </script>
+    <script th:src="@{kinbin.js}"></script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+body {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#buttons {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#kinbin-status {
+    float: left;
+}
+
+#board {
+    display: inline-table;
+    margin-left: 30px;
+}
+
+.column {
+    display: inline-grid;
+    padding-left: 30px;
+}
