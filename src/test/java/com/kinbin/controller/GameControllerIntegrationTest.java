@@ -42,4 +42,11 @@ public class GameControllerIntegrationTest {
                 .andExpect(status().isFound());
     }
 
+    @Test
+    public void shouldGetFormToAddNewColumn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/add_column_form"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("add_column_form"));
+    }
+
 }

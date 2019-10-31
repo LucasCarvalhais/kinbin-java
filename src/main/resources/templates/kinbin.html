@@ -3,36 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Kinbin</title>
-    <style>
-        body {
-            margin-left: 100px;
-            margin-right: 100px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-
-        #buttons {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        #kinbin-status {
-            float: left;
-        }
-
-        #board {
-            display: inline-block;
-            margin-left: 30px;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{kinbin.css}">
 </head>
 <body>
     <h1>Kinbin's Adventure</h1>
     <div id="buttons">
-        <button id="add-column">Add new column</button>
+        <button id="add-column" onclick="addColumn()">Add new column</button>
         <button id="add-card" onclick="addCard()">Add new card</button>
         <button id="pulse" onclick="pulse()">Pulse</button>
     </div>
@@ -48,7 +24,7 @@
     </div>
     <div id="board">
         <h2>Board</h2>
-        <div th:each="column : ${columns}">
+        <div class="column" th:each="column : ${columns}">
             <div>
                 <p th:text="${column.name}">Column</p>
                 <ul th:each="card : ${column.cards}">
@@ -58,20 +34,6 @@
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        function pulse(){
-            $.get("/pulse", function(data, status){
-                console.log(status);
-                window.location.reload();
-            });
-        }
-
-        function addCard(){
-            $.get("/addCard", function(data, status){
-                console.log(status);
-                window.location.reload();
-            });
-        }
-    </script>
+    <script th:src="@{kinbin.js}"></script>
 </body>
 </html>
