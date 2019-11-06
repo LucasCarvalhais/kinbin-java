@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{kinbin.css}">
+</head>
+<body>
+    <h1>Trello test</h1>
+
+    <p th:text="${error}" style="color: red"></p>
+
+    <div class="column" th:each="column : ${board.columns}">
+        <h3 th:text="${column.name}">Column</h3>
+        <ul th:each="card : ${column.cards}">
+            <li>
+                [<span th:text="${card.cardType}"></span>]
+                <span th:text="${card.id}"></span>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

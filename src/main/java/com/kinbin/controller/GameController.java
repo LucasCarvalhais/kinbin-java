@@ -1,14 +1,22 @@
 package com.kinbin.controller;
 
-import ch.qos.logback.classic.db.names.ColumnName;
 import com.kinbin.core.model.board.*;
 import com.kinbin.core.model.kinbin.Kinbin;
 import com.kinbin.core.service.Game;
-import org.springframework.web.bind.annotation.*;
+import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import static org.springframework.util.StringUtils.capitalize;
 
@@ -86,4 +94,96 @@ public class GameController {
         response.sendRedirect("/");
     }
 
+    // to get key and token for tests: https://trello.com/app-key
+    @GetMapping("/trello")
+    public ModelAndView trello(@RequestParam String key, @RequestParam String token) {
+        ModelAndView modelAndView = new ModelAndView("trello");
+
+        try
+        {
+            String boardsJson = httpGet("members/me/boards", key, token);
+            ArrayList<Object> boards = new JSONParser(boardsJson).parseArray();
+            LinkedHashMap<String, Object> boardMap = (LinkedHashMap<String, Object>) boards.get(1);
+            String boardId = boardMap.get("id").toString();
+
+            Board board = new BoardImpl();
+
+            String listsPath = String.format("boards/%s/lists", boardId);
+            String listsJson = httpGet(listsPath, key, token);
+            ArrayList<Object> lists = new JSONParser(listsJson).parseArray();
+
+            for (Object listItem: lists)
+            {
+                LinkedHashMap<String, Object> listMap = (LinkedHashMap<String, Object>) listItem;
+                String listId = listMap.get("id").toString();
+
+                Column column = new Replenishment();
+
+                String cardsPath = String.format("lists/%s/cards", listId);
+                String cardsJson = httpGet(cardsPath, key, token);
+                ArrayList<Object> cards = new JSONParser(cardsJson).parseArray();
+
+                for (Object cardItem: cards)
+                {
+                    LinkedHashMap<String, Object> cardMap = (LinkedHashMap<String, Object>) cardItem;
+                    String cardId = cardMap.get("id").toString();
+
+                    CardType type = CardType.OTHER;
+                    ArrayList<Object> cardLabels = (ArrayList<Object>)cardMap.get("labels");
+
+                    for (Object labelItem: cardLabels)
+                    {
+                        LinkedHashMap<String, Object> labelMap = (LinkedHashMap<String, Object>) labelItem;
+                        String name = labelMap.get("name").toString().toLowerCase();
+
+                        switch (name)
+                        {
+                            case "story": type = CardType.STORY; break;
+                            case "defect": type = CardType.DEFECT; break;
+                            case "spike": type = CardType.SPIKE; break;
+                            case "techdebt": type = CardType.TECH_DEBT; break;
+                        }
+
+                        if (type != CardType.OTHER)
+                            break;
+                    }
+
+                    Card card = new Card(cardId, type);
+                    column.addCard(card);
+                }
+
+                board.addColumn(column);
+            }
+
+            modelAndView.addObject("board", board);
+
+        }
+        catch (Exception e)
+        {
+            modelAndView.addObject("error", e.getMessage());
+        }
+
+        modelAndView.addObject("test", "test");
+
+        return modelAndView;
+    }
+
+    private String httpGet(String path, String key, String token) throws IOException {
+        String site = "https://api.trello.com/1/%s?key=%s&token=%s";
+        URL url = new URL(String.format(site, path, key, token));
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+
+        con.disconnect();
+        return content.toString();
+    }
 }
